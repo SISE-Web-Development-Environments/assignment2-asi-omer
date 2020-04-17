@@ -2,11 +2,28 @@
 <html>
 
 <head>
+	
+	<link rel="stylesheet" type="text/css" href="styles.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+
 	<script src="./jquery-3.4.1.slim.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		$(function () {
+			$("#datepicker").datepicker({
+				changeMonth: true,
+				changeYear: true
+
+			});
+		});
+	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
 	<script type="text/javascript" src="./welcome.js"></script>
 	<script type="text/javascript" src="./app.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles.css" />
-
 </head>
 
 <body>
@@ -21,11 +38,53 @@
 			&nbsp; &nbsp;
 			<button id="signin" class="btn btn-primary btn-xl">Sign In</button>
 		</div>
-		<div id="signindiv" class="header-content startHidden inner dataArea">
-			<h1 class="cursive">Packman Forever</h1>
-			<br>
-			<h4>Please press on one of the options to proceed</h4>
-			<br>
+		<div id="signindiv" class="inner startHidden dataArea container header-content">
+			<h1>Login</h1>
+			<form action="" name="login">
+				<label for="username">User Name</label>
+				<input type="text" name="username" id="username" placeholder="John123" />
+
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password"
+					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
+
+				<button type="submit">Login</button>
+
+				<button class="returnToStart">Return</button>
+
+			</form>
+		</div>
+		<div id="signupdiv" class="inner container header-content startHidden dataArea">
+			<h2>Registration</h2>
+			<form action="" name="registration">
+
+				<label for="username">User Name</label>
+				<input type="text" name="username" id="username" placeholder="John123" />
+
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password"
+					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
+
+				<label for="firstname">First Name</label>
+				<input type="text" name="firstname" id="firstname" placeholder="John" />
+
+				<label for="lastname">Last Name</label>
+				<input type="text" name="lastname" id="lastname" placeholder="Doe" />
+
+				<label for="email">Email</label>
+				<input type="email" name="email" id="email" placeholder="john@doe.com" />
+
+				<label for="date">Birthday</label>
+				<input type="text" id="datepicker" name="date" placeholder="mm/dd/yyyy">
+
+				<button type="submit">Register</button>
+
+				<button class="returnToStart">Return</button>
+
+			</form>
+		</div>
+		<div id="options" class="container header-content startHidden dataArea">
+			<h2>Options</h2>
 		</div>
 		<div id="score">
 			<label for="lblScore">SCORE:</label>
