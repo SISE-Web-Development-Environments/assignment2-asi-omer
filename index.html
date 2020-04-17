@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="./jquery-3.4.1.slim.min.js"></script>
-		<script type="text/javascript" src="./app.js"></script>
-	</head>
 
-	<body>
+<head>
+	<script src="./jquery-3.4.1.slim.min.js"></script>
+	<script type="text/javascript" src="./welcome.js"></script>
+	<script type="text/javascript" src="./app.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles.css" />
+
+</head>
+
+<body>
+	<header id="first">
+
+		<div class="inner dataArea header-content" id="welcome">
+			<h1 class="cursive">Packman Forever</h1>
+			<br>
+			<h4>Please press on one of the options to proceed</h4>
+			<br>
+			<button id="signup" class="btn btn-primary btn-xl">Sign Up</button>
+			&nbsp; &nbsp;
+			<button id="signin" class="btn btn-primary btn-xl">Sign In</button>
+		</div>
+		<div id="signindiv" class="header-content startHidden inner dataArea">
+			<h1 class="cursive">Packman Forever</h1>
+			<br>
+			<h4>Please press on one of the options to proceed</h4>
+			<br>
+		</div>
 		<div id="score">
 			<label for="lblScore">SCORE:</label>
 			<input id="lblScore" type="text" />
@@ -17,5 +38,9 @@
 		<div id="game">
 			<canvas id="canvas" height="600" width="600"></canvas>
 		</div>
-	</body>
+
+	</header>
+
+</body>
+
 </html>
