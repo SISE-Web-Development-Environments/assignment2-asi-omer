@@ -1,126 +1,189 @@
 $(document).ready(function () {
 
-    $("#signin").click(SignIn);
+  $("#signin").click(SignIn);
+  $("#signup").click(SignUp);
+  $(".returnToStart").click(ReturnToMain)
+  localStorage.setItem("p", "p");
 
 
-    $("#signup").click(SignUp);
+});
+$(function () {
+  $('input[type="range"]').on('input', function () {
 
-    $(".returnToStart").click(ReturnToMain)
+    var control = $(this),
+      controlMin = control.attr('min'),
+      controlMax = control.attr('max'),
+      controlVal = control.val(),
+      controlThumbWidth = control.data('thumbwidth');
+
+    var range = controlMax - controlMin;
+
+    var position = ((controlVal - controlMin) / range) * 100;
+    var positionOffset = Math.round(controlThumbWidth * position / 100) - (controlThumbWidth / 2);
+    var output = control.next('output');
+
+    output
+      .css('left', 'calc(' + position + '% - ' + positionOffset + 'px)')
+      .text(controlVal);
+
+  });
 });
 
 function SignIn() {
-    $("div").hide();
-    $("#signindiv").show();
+  $("div").hide();
+  $("#signindiv").show();
 };
 
 function SignUp() {
-    $("div").hide();
-    $("#signupdiv").show();
-
+  $("div").hide();
+  $("#signupdiv").show();
 };
 
 function ReturnToMain() {
-    $("div").hide();
-    $("#welcome").show();
+  $("div").hide();
+  $("#welcome").show();
 };
 
-function showOptions(){
-    $("div").hide();
-    $("#options").show();
+function showOptions() {
+  $("div").hide();
+  $("#options").show();
+  if (localStorage.getItem(document.getElementById("up_key").value) === null) {
+    localStorage.setItem("up_key", "ArrowUp");
+  }
+  if (localStorage.getItem(document.getElementById("down_key").value) === null) {
+    localStorage.setItem("down_key", "ArrowDown");
+  }
+  if (localStorage.getItem(document.getElementById("right_key").value) === null) {
+    localStorage.setItem("right_key", "ArrowRight");
+  }
+  if (localStorage.getItem(document.getElementById("left_key").value) === null) {
+    localStorage.setItem("left_key", "ArrowLeft");
+  }
+  document.getElementById("up_key").value = localStorage.getItem("up_key");
+  document.getElementById("down_key").value = localStorage.getItem("down_key");
+  document.getElementById("right_key").value = localStorage.getItem("right_key");
+  document.getElementById("left_key").value = localStorage.getItem("left_key");
+}
+
+function getKey(event, id) {
+  document.getElementById(id).value = event.code;
+  localStorage.setItem(id, event.code);
+}
+
+
+
+
+
+function checkCredantials() {
+  if (localStorage.getItem(document.getElementById("sign_in_username").key) === null) {
+    if (localStorage.getItem(document.getElementById("sign_in_username").value) == document.getElementById("sign_in_password").value) {
+      showOptions()
+    }
+    else {
+      alert("Please enter a valid credantials")
+    }
+  }
+  else {
+    alert("Please enter a valid credantials")
+  }
+}
+
+function saveCredantials() {
+  localStorage.setItem(document.getElementById("sign_up_username").value, document.getElementById("sign_up_password").value);
+  //restore - document.getElementById("result").innerHTML = localStorage.getItem("lastname");
 }
 
 // Wait for the DOM to be ready
-$(function() {
-    // Initialize form validation on the registration form.
-    // It has the name attribute "registration"
-    $("form[name='registration']").validate({
-      // Specify validation rules
-      rules: {
-        username: {
-            required: true,
-        },
-        firstname: {
-            required: true,
-            noNumbers: true
-        },
-        lastname: {
-            required: true,
-            noNumbers: true
-        },
-        email: {
-          required: true,
-          email: true
-        },
-        password: {
-          required: true,
-          minlength: 6,
-          mypassword: true
-        },
-        date:{
-            required: true,
-            date: true
-        } 
+$(function () {
+  // Initialize form validation on the registration form.
+  // It has the name attribute "registration"
+  $("form[name='registration']").validate({
+    // Specify validation rules
+    rules: {
+      username: {
+        required: true,
       },
-      // Specify validation error messages
-      messages: {
-        username: "Please enter your username",
-        firstname:{
-            required: "Please enter your firstname",
-        },
-        lastname:{
-            required: "Please enter your lastname"
-        },
-        password: {
-          required: "Please provide a password",
-          minlength: "Your password must be at least 5 characters long"
-        },
-        email: "Please enter a valid email address",
-        date: "Please enter a valid birthday"
+      firstname: {
+        required: true,
+        noNumbers: true
       },
-      // Make sure the form is submitted to the destination defined
-      // in the "action" attribute of the form when valid
-      submitHandler: function(form) {
-        form.submit();
+      lastname: {
+        required: true,
+        noNumbers: true
+      },
+      email: {
+        required: true,
+        email: true
+      },
+      password: {
+        required: true,
+        minlength: 6,
+        mypassword: true
+      },
+      date: {
+        required: true,
+        date: true
       }
-    });
-
-    $("form[name='login']").validate({
-        // Specify validation rules
-        rules: {
-          username: {
-              required: true,
-          },
-          password: {
-            required: true,
-          },
-        },
-        // Specify validation error messages
-        messages: {
-          username: "Please enter your username",
-          password: {
-            required: "Please provide a password",
-          },
-        },
-        // Make sure the form is submitted to the destination defined
-        // in the "action" attribute of the form when valid
-        submitHandler: function(form) {
-        //   form.submit();
-            showOptions();
-        }
-      });
-
-
-
-
+    },
+    // Specify validation error messages
+    messages: {
+      username: "Please enter your username",
+      firstname: {
+        required: "Please enter your firstname",
+      },
+      lastname: {
+        required: "Please enter your lastname"
+      },
+      password: {
+        required: "Please provide a password",
+        minlength: "Your password must be at least 5 characters long"
+      },
+      email: "Please enter a valid email address",
+      date: "Please enter a valid birthday"
+    },
+    // Make sure the form is submitted to the destination defined
+    // in the "action" attribute of the form when valid
+    submitHandler: function (form) {
+      saveCredantials();
+    }
   });
 
-  $.validator.addMethod('mypassword', function(value, element) {
-    return this.optional(element) || (value.match(/[a-zA-Z]/) && value.match(/[0-9]/));
-},
-'Password must contain at least one numeric and one alphabetic character.');
+  $("form[name='login']").validate({
+    // Specify validation rules
+    rules: {
+      username: {
+        required: true,
+      },
+      password: {
+        required: true,
+      },
+    },
+    // Specify validation error messages
+    messages: {
+      username: "Please enter your username",
+      password: {
+        required: "Please provide a password",
+      },
+    },
+    // Make sure the form is submitted to the destination defined
+    // in the "action" attribute of the form when valid
+    submitHandler: function (form) {
+      checkCredantials()
+    }
+  });
 
-$.validator.addMethod('noNumbers', function(value, element) {
-    return this.optional(element) || (value.match(/[a-zA-Z]/) && !value.match(/[0-9]/));
+
+
+
+});
+
+$.validator.addMethod('mypassword', function (value, element) {
+  return this.optional(element) || (value.match(/[a-zA-Z]/) && value.match(/[0-9]/));
 },
-'Password must contain at only alphabetic characters.');
-    
+  'Password must contain at least one numeric and one alphabetic character.');
+
+$.validator.addMethod('noNumbers', function (value, element) {
+  return this.optional(element) || (value.match(/[a-zA-Z]/) && !value.match(/[0-9]/));
+},
+  'Password must contain at only alphabetic characters.');
+
