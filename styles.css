@@ -251,3 +251,9 @@ fieldset[disabled] .btn-default.active {
   form .error {
     color: #ff0000;
   }
+
+  .options {
+    position:absolute;
+    bottom: 0;
+    right:0;
+  }

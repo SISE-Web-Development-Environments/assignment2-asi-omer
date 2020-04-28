@@ -87,7 +87,7 @@
 
 			</form>
 		</div>
-		<div id="options" class="inner container header-content startHidden dataArea">
+		<div id="options" class="inner startHidden dataArea">
 			<h2>Options</h2>
 			<table>
 				<tr>
@@ -128,7 +128,7 @@
 					</td>
 					<td>
 						<input id="balls_num" type="range" min="50" max="90" step="1" value="55" data-thumbwidth="20">
-						<output name="rangeVal">55</output>
+						<output name="rangeVal" id="balls_num_o">55</output>
 					</td>
 				</tr>
 				<tr>
@@ -162,7 +162,7 @@
 					<td>
 						<input id="game_time" type="range" min="60" max="600" step="10" value="300"
 							data-thumbwidth="20">
-						<output name="rangeVal">300</output>
+						<output name="rangeVal" id="game_time_o">300</output>
 					</td>
 				</tr>
 				<tr>
@@ -171,17 +171,17 @@
 					</td>
 					<td>
 						<input id="monster_num" type="range" min="1" max="4" step="1" value="1" data-thumbwidth="20">
-						<output name="rangeVal">1</output>
+						<output name="rangeVal" id="monster_num_o">1</output>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<button type="play">Play</button>
+						<button type="play" onclick="play()">Play</button>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<button class="random">Random</button>
+						<button class="random" onclick="random()">Random</button>
 					</td>
 
 				</tr>

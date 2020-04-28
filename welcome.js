@@ -70,8 +70,43 @@ function getKey(event, id) {
   localStorage.setItem(id, event.code);
 }
 
+function play(){
+  
+  sessionStorage.setItem("balls_num",document.getElementById("balls_num_o").innerText);
+  sessionStorage.setItem("pts5_color",document.getElementById("pts5_color").style.backgroundColor);
+  sessionStorage.setItem("pts15_color",document.getElementById("pts15_color").style.backgroundColor);
+  sessionStorage.setItem("pts25_color",document.getElementById("pts25_color").style.backgroundColor);
+  sessionStorage.setItem("game_time",document.getElementById("game_time_o").innerText);
+  sessionStorage.setItem("monster_num",document.getElementById("monster_num_o").innerText);
+
+  startGame()
+ 
+}
+
+function random(){
+  
+
+  //add randomation
 
 
+  sessionStorage.setItem("balls_num",document.getElementById("balls_num_o").innerText);
+  sessionStorage.setItem("pts5_color",document.getElementById("pts5_color").style.backgroundColor);
+  sessionStorage.setItem("pts15_color",document.getElementById("pts15_color").style.backgroundColor);
+  sessionStorage.setItem("pts25_color",document.getElementById("pts25_color").style.backgroundColor);
+  sessionStorage.setItem("game_time",document.getElementById("game_time_o").innerText);
+  sessionStorage.setItem("monster_num",document.getElementById("monster_num_o").innerText);
+
+  startGame()
+ 
+}
+
+function startGame(){
+  $("div").hide()
+  $("#game").show()
+  $("#score").show()
+  $("#time").show()
+  Start()
+}
 
 
 function checkCredantials() {
