@@ -257,3 +257,17 @@ fieldset[disabled] .btn-default.active {
     bottom: 0;
     right:0;
   }
+
+  .ml4 {
+    position: relative;
+    font-weight: 900;
+    font-size: 4.5em;
+  }
+  .ml4 .letters {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0.3;
+    right: 0;
+    opacity: 0; 
+  }
