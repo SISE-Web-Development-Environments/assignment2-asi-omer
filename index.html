@@ -32,18 +32,21 @@
 
 <body>
 	<header id="first">
-
-		<div class="inner dataArea header-content" id="welcome">
-			<h1 class="cursive">Packman Forever</h1>
-			<br>
+		<span id="logo">
+		<br>
+		<br>
+		<img src="Resources/logoPac.jpg" width="400" height="200" >
+		</span>
+			
+		<div class="inner dataArea container header-content" id="welcome">
+			
 			<h4>Please press on one of the options to proceed</h4>
-			<br>
 			<button id="signup" class="btn btn-primary btn-xl">Sign Up</button>
 			&nbsp; &nbsp;
 			<button id="signin" class="btn btn-primary btn-xl">Sign In</button>
 		</div>
 		<div id="signindiv" class="inner startHidden dataArea container header-content">
-			<h1>Login</h1>
+			<h1 style = "text-align: center">Login</h1>
 			<form action="" name="login">
 				<label for="username">User Name</label>
 				<input type="text" name="username" id="sign_in_username" placeholder="John123" />
@@ -54,12 +57,12 @@
 
 				<button type="submit">Login</button>
 
-				<button class="returnToStart">Return</button>
+				<button type="button" class="returnToStart">Return</button>
 
 			</form>
 		</div>
 		<div id="signupdiv" class="inner container header-content startHidden dataArea">
-			<h2>Registration</h2>
+			<h1 style = "text-align: center">Registration</h1>
 			<form action="" name="registration">
 
 				<label for="username">User Name</label>
@@ -83,7 +86,7 @@
 
 				<button type="submit">Register</button>
 
-				<button class="returnToStart">Return</button>
+				<button  type="button" class="returnToStart">Return</button>
 
 			</form>
 		</div>
@@ -189,22 +192,32 @@
 
 
 		</div>
-		<div id="score">
-			<label for="lblScore">SCORE:</label>
-			<input id="lblScore" type="text" />
-		</div>
-		<div id="time">
-			<label for="lblTime">TIME:</label>
-			<input id="lblTime" type="text" />
-		</div>
-		<div id="game">
+		<div id="game" class="startHidden">
+			<br>
+			<br>
+			<table>
+				<tr>
+					<td><label for="lblUser">USER:</label></td>				
+					<td><label id="lblUser" type="text"></label></td>					
+				</tr>
+				<tr>
+					<td><label for="lblScore">SCORE:</label></td>				
+					<td><label id="lblScore" type="text"></label></td>					
+				</tr>
+				<tr>
+					<td><label for="lblTime">TIME:</label></td>				
+					<td><label id="lblTime" type="text"></label></td>					
+				</tr>				
+			</table>
 			<canvas id="canvas" height="768" width="1200"></canvas>
 		</div>
 
+
 		<h1 class="ml4">
 			<span class="letters letters-1">Bonus</span>
-			<!-- <span class="letters letters-2">You Won!</span>
-			<span class="letters letters-3">You Lost!</span> -->
+			<span class="letters letters-4">Time Bonus</span>
+			<span class="letters letters-2">You Won!</span>
+			<span class="letters letters-3">You Lost!</span>
 		</h1>
 
 	</header>

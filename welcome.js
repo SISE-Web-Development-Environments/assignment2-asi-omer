@@ -31,21 +31,25 @@ $(function () {
 
 function SignIn() {
   $("div").hide();
+  $("#logo").show();
   $("#signindiv").show();
 };
 
 function SignUp() {
   $("div").hide();
+  $("#logo").show();
   $("#signupdiv").show();
 };
 
 function ReturnToMain() {
   $("div").hide();
+  $("#logo").show();
   $("#welcome").show();
 };
 
 function showOptions() {
   $("div").hide();
+  $("#logo").show();
   $("#options").show();
   if (localStorage.getItem(document.getElementById("up_key").value) === null) {
     localStorage.setItem("up_key", "ArrowUp");
@@ -102,9 +106,8 @@ function random(){
 
 function startGame(){
   $("div").hide()
+  $("#logo").hide();
   $("#game").show()
-  $("#score").show()
-  $("#time").show()
   Start()
 }
 
@@ -112,6 +115,7 @@ function startGame(){
 function checkCredantials() {
   if (localStorage.getItem(document.getElementById("sign_in_username").key) === null) {
     if (localStorage.getItem(document.getElementById("sign_in_username").value) == document.getElementById("sign_in_password").value) {
+      lblUser.innerText = document.getElementById("sign_in_username").value;
       showOptions()
     }
     else {
@@ -221,4 +225,3 @@ $.validator.addMethod('noNumbers', function (value, element) {
   return this.optional(element) || (value.match(/[a-zA-Z]/) && !value.match(/[0-9]/));
 },
   'Password must contain at only alphabetic characters.');
-

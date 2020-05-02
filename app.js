@@ -23,6 +23,11 @@ var lastKeyPressed;
 var redMonster;
 var hasPackman;
 var coin;
+var lastCoinMove;
+var moved;
+var watch;
+var watchImage;
+var watchTaken;
 
 function Start() {
 	context = canvas.getContext("2d");
@@ -37,14 +42,20 @@ function Start() {
 	gameTime = sessionStorage.getItem("game_time");
 	num_of_monsters = sessionStorage.getItem("monster_num");
 	monsters = new Array();
+	watch = new Array();
 	hasPackman = false;
 	board = new Array();
 	coin = new Object();
+	watchImage = new Image();
+	watchImage.src = "Resources\\watch.png"
 	runningCoin = new Image();
 	runningCoin.src = "Resources\\coin.png"
 	redMonster = new Image();
 	redMonster.src = "Resources\\redMonster.png"
 	score = 0;
+	moved=false;
+	lastCoinMove = 0;
+	watchTaken = false;
 	pac_color = "yellow";
 	var cnt = 260;
 	var food_remain = num_of_balls;
@@ -52,14 +63,13 @@ function Start() {
 	start_time = new Date();
 	for (var i = 0; i < 20; i++) {
 		board[i] = new Array();
-		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 12; j++) {
 			if (
 				(i == 3 && j == 3) ||
 				(i == 3 && j == 4) ||
 				(i == 3 && j == 5) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
+				(i == 16 && j == 1) ||
+				(i == 16 && j == 2)
 			) {
 				board[i][j] = 4;
 			} else {
@@ -179,9 +189,10 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 250);
-	monsterInterval = setInterval(UpdateMonsterPosition, 500);
-	coinInterval = setInterval(UpdateCoinPosition, 700)
+	interval = setInterval(UpdatePosition, 100);
+	monsterInterval = setInterval(UpdateMonsterPosition, 300);
+	coinInterval = setInterval(UpdateCoinPosition, 100);
+	watchInterval = setInterval(UpdateWatchPosition,1000);
 }
 
 function isCorner(i, j) {
@@ -221,8 +232,8 @@ function GetKeyPressed() {
 
 function Draw() {
 	canvas.width = canvas.width; //clean board
-	lblScore.value = score;
-	lblTime.value = time_elapsed;
+	lblScore.innerText = score;
+	lblTime.innerText = time_elapsed;
 	for (var i = 0; i < 20; i++) {
 		for (var j = 0; j < 12; j++) {
 			var center = new Object();
@@ -279,10 +290,12 @@ function Draw() {
 				context.fillStyle = ball_Color_5; //color
 				context.fill();
 			} else if (board[i][j] == 4) {
+
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
 				context.fill();
+
 			} else if (board[i][j] == 5) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
@@ -300,6 +313,9 @@ function Draw() {
 			}
 			else if (board[i][j] == 9) {
 				context.drawImage(runningCoin, center.x - 30, center.y - 30);
+			}
+			else if (board[i][j] == 10) {
+				context.drawImage(watchImage, center.x - 30, center.y - 30);
 			}
 		}
 	}
@@ -331,6 +347,7 @@ function UpdatePosition() {
 			shape.i++;
 		}
 	}
+
 	if (board[shape.i][shape.j] == 1) {
 		score = score + 5;
 	}
@@ -340,6 +357,19 @@ function UpdatePosition() {
 	else if (board[shape.i][shape.j] == 6) {
 		score = score + 25;
 	}
+	else if (board[shape.i][shape.j] == 9) {
+		window.clearInterval(coinInterval);
+		showBonus();
+		score = score + 50;
+	}
+	else if(board[shape.i][shape.j] == 10){
+		window.clearInterval(watchInterval);
+		showTimeBonus();
+		time_elapsed = time_elapsed + 50;
+		watchTaken=true;
+	}
+
+
 	if (board[shape.i][shape.j] == 7) {
 		window.clearInterval(interval);
 		window.alert("You Lost!");
@@ -347,6 +377,9 @@ function UpdatePosition() {
 	else {
 		board[shape.i][shape.j] = 2;
 	}
+
+
+
 	var currentTime = new Date();
 	time_elapsed = gameTime - ((currentTime - start_time) / 1000);
 	if (score >= 20 && ((currentTime - start_time) / 1000) <= 10) {
@@ -363,7 +396,7 @@ function UpdatePosition() {
 function UpdateMonsterPosition() {
 	var rnd;
 	monsters.forEach(monster => {
-		if (monster.last == 7) {
+		if (monster.last == 7 || monster.last == 9) {
 			board[monster.i][monster.j] == 0
 		}
 		else {
@@ -372,7 +405,7 @@ function UpdateMonsterPosition() {
 		if (shape.i >= monster.i && board[monster.i + 1][monster.j] != 4) {
 			if (shape.j > monster.j && board[monster.i][monster.j + 1] != 4) {
 				rnd = Math.random();
-				if (rnd > 0.5) {
+				if (rnd > 0.9) {
 					monster.i++;
 				}
 				else {
@@ -386,7 +419,7 @@ function UpdateMonsterPosition() {
 		else if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4) {
 			if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4) {
 				rnd = Math.random();
-				if (rnd > 0.5) {
+				if (rnd > 0.9) {
 					monster.i--;
 				}
 				else {
@@ -400,7 +433,7 @@ function UpdateMonsterPosition() {
 		else if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4) {
 			if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4) {
 				rnd = Math.random();
-				if (rnd > 0.5) {
+				if (rnd > 0.9) {
 					monster.j--;
 				}
 				else {
@@ -414,7 +447,7 @@ function UpdateMonsterPosition() {
 		else if (shape.j >= monster.j && board[monster.i][monster.j + 1] != 4) {
 			if (shape.i > monster.i && board[monster.i + 1][monster.j] != 4) {
 				rnd = Math.random();
-				if (rnd > 0.5) {
+				if (rnd > 0.9) {
 					monster.j++;
 				}
 				else {
@@ -423,7 +456,7 @@ function UpdateMonsterPosition() {
 			}
 			else {
 				rnd = Math.random();
-				if (rnd < 0.1) {
+				if (rnd < 0.3) {
 					monster.j--;
 				}
 				else {
@@ -442,45 +475,127 @@ function UpdateMonsterPosition() {
 		window.alert("You Lost!");
 
 	}
-	Draw();
+	else {
+		Draw();
+	}
 }
 
 
 function UpdateCoinPosition() {
-	if (coin.last == 9) {
-		board[coin.i][coin.j] == 0
-	}
-	else {
-		board[coin.i][coin.j] = coin.last;
+	moved =false;
+	 
+	var repeatMove = Math.random();
+	if (repeatMove > 0.7 || lastCoinMove == 0) {
+		lastCoinMove = Math.floor(Math.random() * 4) + 1;
 	}
 
-	var coinPlacing = Math.floor(Math.random() * 4);
-	if (coinPlacing == 0 && board[coin.i + 1][coin.j] != 4) {
+	if (lastCoinMove == 2 && board[coin.i + 1][coin.j] != 4 && coin.i < 19) {
+		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
+			board[coin.i][coin.j] == 0
+		}
+		else {
+			board[coin.i][coin.j] = coin.last;
+		}
 		coin.i++;
+		lastCoinMove = 2;
+		moved = true;
 	}
-	else if (coinPlacing == 1 && board[coin.i - 1][coin.j] != 4) {
+	else if (lastCoinMove == 1 && board[coin.i - 1][coin.j] != 4 && coin.i > 0) {
+		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
+			board[coin.i][coin.j] == 0
+		}
+		else {
+			board[coin.i][coin.j] = coin.last;
+		}
 		coin.i--;
+		lastCoinMove = 1;
+		moved = true;
 	}
-	else if (coinPlacing == 2 && board[coin.i][coin.j - 1] != 4) {
+	else if (lastCoinMove == 3 && board[coin.i][coin.j - 1] != 4 && coin.j > 0) {
+		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
+			board[coin.i][coin.j] == 0
+		}
+		else {
+			board[coin.i][coin.j] = coin.last;
+		}
 		coin.j--;
+		lastCoinMove = 3;
+		moved = true;
 	}
-	else if (coinPlacing == 3 && board[coin.i][coin.j + 1] != 4) {
+	else if (lastCoinMove == 4 && board[coin.i][coin.j + 1] != 4 && coin.j < 11) {
+		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
+			board[coin.i][coin.j] == 0
+		}
+		else {
+			board[coin.i][coin.j] = coin.last;
+		}
 		coin.j++;
+		lastCoinMove = 4;
+		moved = true;
 	}
 
-	coin.last = board[coin.i][coin.j];
-	board[coin.i][coin.j] = 9;
 
 
-
-	if (board[shape.i][shape.j] == 9) {
+	if (board[coin.i][coin.j] == 2) {
 		window.clearInterval(coinInterval);
 		showBonus();
-		score = score + 5;
+		score = score + 50;
 	}
+
+	if(moved){
+	coin.last = board[coin.i][coin.j];
+	board[coin.i][coin.j] = 9;
+	}
+	
+
+
+
 	Draw();
+
 }
 
+function UpdateWatchPosition(){
+	if(!watchTaken){
+		var emptyCell = findRandomEmptyCell(board);
+		var i = emptyCell[0];
+		var j = emptyCell[1];
+		//board[i][j] = 10;
+		//setTimeout(() => { return; }, 2000);
+		//board[i][j] = 0;
+		//bool add boll remove
+	}
+}
+
+
+function showTimeBonus(){
+	var ml4 = {};
+	ml4.opacityIn = [0, 1];
+	ml4.scaleIn = [0.2, 1];
+	ml4.scaleOut = 3;
+	ml4.durationIn = 800;
+	ml4.durationOut = 600;
+	ml4.delay = 500;
+
+	anime.timeline({ loop: false })
+		.add({
+			targets: '.ml4 .letters-4',
+			opacity: ml4.opacityIn,
+			scale: ml4.scaleIn,
+			duration: ml4.durationIn
+		}).add({
+			targets: '.ml4 .letters-4',
+			opacity: 0,
+			scale: ml4.scaleOut,
+			duration: ml4.durationOut,
+			easing: "easeInExpo",
+			delay: ml4.delay
+		}).add({
+			targets: '.ml4',
+			opacity: 0,
+			duration: 500,
+			delay: 500
+		});
+}
 
 function showBonus() {
 	var ml4 = {};

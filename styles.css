@@ -1,4 +1,3 @@
-
 html,
 body {
     width: 100%;
@@ -34,21 +33,7 @@ header {
     text-align: center;
     color: #fff;
     width: 100%;
-    background-color: hsl(61, 18%, 51%);
-	background-image: repeating-linear-gradient(45deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
-	  hsla(56, 94%, 52%, 0.712) 10px, hsla(56, 94%, 52%, 0.712) 35px, hsla(56, 53%, 63%, 0.5)35px, hsla(61, 53%, 63%, 0.5) 40px,
-	  hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
-	  hsla(56, 53%, 63%, 0.5) 60px, hsla(56, 53%, 63%, 0.5)70px, hsl(56, 82%, 59%) 70px, hsl(56, 82%, 59%) 80px,
-	  hsl(56, 82%, 59%) 80px, hsl(56, 82%, 59%) 90px, hsla(56, 53%, 63%, 0.5)90px, hsla(56, 53%, 63%, 0.5)110px,
-	  hsla(56, 94%, 52%, 0.712) 110px, hsla(56, 94%, 52%, 0.712) 120px, hsla(197, 62%, 11%, 0.5) 120px, hsla(197, 62%, 11%, 0.5) 140px
-	  ),
-	repeating-linear-gradient(135deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
-	  hsla(56, 94%, 52%, 0.712) 10px, hsla(56, 94%, 52%, 0.712) 35px, hsla(56, 53%, 63%, 0.5)35px, hsla(56, 53%, 63%, 0.5)40px,
-	  hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
-	  hsla(61, 53%, 63%, 0.5) 60px, hsla(56, 53%, 63%, 0.5)70px, hsl(56, 82%, 59%) 70px, hsl(56, 82%, 59%) 80px,
-	  hsla(56, 94%, 52%, 0.712) 80px, hsl(56, 82%, 59%) 90px, hsla(56, 53%, 63%, 0.5)90px, hsla(56, 53%, 63%, 0.5)110px,
-	  hsla(56, 94%, 52%, 0.712) 110px, hsla(56, 94%, 52%, 0.712) 140px, hsla(197, 62%, 11%, 0.5) 140px, hsla(197, 62%, 11%, 0.5) 160px
-	);
+  
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -59,7 +44,7 @@ header {
 header .header-content {
     position: relative;
     width: 100%;
-    padding: 100px 15px;
+    padding: 15px 15px;
     text-align: center;
     z-index: 2;
 }
@@ -75,47 +60,6 @@ header .header-content .inner p {
     font-weight: 300;
     color: rgba(255,255,255,0.7);
 }
-
-
-
-
-
-    
-    header {
-        min-height: 100%;
-    }
-
-    header .header-content {
-        position: absolute;
-        top: 50%;
-        padding: 0 50px;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
-
-    header .header-content .inner {
-        margin-right: auto;
-        margin-left: auto;
-        max-width: 1000px;
-    }
-
-    header .header-content .inner h1 {
-        font-size: 53px;
-    }
-
-    header .header-content .inner p {
-        margin-right: auto;
-        margin-left: auto;
-        max-width: 80%;
-        font-size: 18px;
-    }
-    
-    section {
-        min-height: 600px;
-        padding: 100px 0;
-    }
-
 
 .btn-default {
     border-color: #fff;
@@ -270,4 +214,10 @@ fieldset[disabled] .btn-default.active {
     top: 0.3;
     right: 0;
     opacity: 0; 
+  }
+  
+  #canvas{
+      border: blue;
+      border-style: double;
+      border-width: 30px;
   }
