@@ -41,6 +41,12 @@ function SignUp() {
   $("#signupdiv").show();
 };
 
+function About() {
+  $("div").hide();
+  $("#logo").show();
+  $("#aboutdiv").show();
+};
+
 function ReturnToMain() {
   $("div").hide();
   $("#logo").show();
@@ -88,20 +94,43 @@ function play(){
 }
 
 function random(){
-  
+  var rand;
 
-  //add randomation
+  localStorage.setItem("up_key", "ArrowUp");
+  localStorage.setItem("down_key", "ArrowDown");
+  localStorage.setItem("right_key", "ArrowRight");
+  localStorage.setItem("left_key", "ArrowLeft");
+  document.getElementById("up_key").value = localStorage.getItem("up_key");
+  document.getElementById("down_key").value = localStorage.getItem("down_key");
+  document.getElementById("right_key").value = localStorage.getItem("right_key");
+  document.getElementById("left_key").value = localStorage.getItem("left_key");
 
-
+  rand = Math.floor(Math.random() * 40) +50;
+  document.getElementById("balls_num").value = rand;
+  document.getElementById("balls_num_o").innerText = rand;
   sessionStorage.setItem("balls_num",document.getElementById("balls_num_o").innerText);
+  
+  document.getElementById("pts5_color").style.backgroundColor = random_rgba();
   sessionStorage.setItem("pts5_color",document.getElementById("pts5_color").style.backgroundColor);
+  document.getElementById("pts15_color").style.backgroundColor = random_rgba();
   sessionStorage.setItem("pts15_color",document.getElementById("pts15_color").style.backgroundColor);
+  document.getElementById("pts25_color").style.backgroundColor = random_rgba();
   sessionStorage.setItem("pts25_color",document.getElementById("pts25_color").style.backgroundColor);
-  sessionStorage.setItem("game_time",document.getElementById("game_time_o").innerText);
-  sessionStorage.setItem("monster_num",document.getElementById("monster_num_o").innerText);
 
-  startGame()
- 
+  rand = Math.floor(Math.random() * 60) +60;
+  document.getElementById("game_time").value = rand;
+  document.getElementById("game_time_o").innerText = rand;
+  sessionStorage.setItem("game_time",document.getElementById("game_time_o").innerText);
+
+  rand = Math.floor(Math.random() * 4) + 1;
+  document.getElementById("monster_num").value = rand;
+  document.getElementById("monster_num_o").innerText = rand;
+  sessionStorage.setItem("monster_num",document.getElementById("monster_num_o").innerText); 
+}
+
+function random_rgba() {
+  var o = Math.round, r = Math.random, s = 255;
+  return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
 }
 
 function startGame(){

@@ -87,13 +87,7 @@ function Start() {
 						board[i][j] = 5;
 					}
 
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt && !isCorner(i, j)) {
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = 2;
-					hasPackman = true;
-				} else {
+				}else {
 					board[i][j] = 0;
 				}
 				cnt--;
@@ -102,8 +96,11 @@ function Start() {
 	}
 	if (!hasPackman) {
 		var emptyCell = findRandomEmptyCell(board);
+		shape.i = emptyCell[0];
+		shape.j = emptyCell[1];
 		board[emptyCell[0]][emptyCell[1]] = 2;
 		hasPackman = true;
+		pacman_remain--;
 	}
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
@@ -233,7 +230,7 @@ function GetKeyPressed() {
 function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.innerText = score;
-	lblTime.innerText = time_elapsed;
+	lblTime.innerText = Math.floor(time_elapsed);
 	for (var i = 0; i < 20; i++) {
 		for (var j = 0; j < 12; j++) {
 			var center = new Object();
@@ -372,6 +369,7 @@ function UpdatePosition() {
 
 	if (board[shape.i][shape.j] == 7) {
 		window.clearInterval(interval);
+		window.clearInterval(monsterInterval);
 		window.alert("You Lost!");
 	}
 	else {
@@ -472,6 +470,7 @@ function UpdateMonsterPosition() {
 	});
 	if (board[shape.i][shape.j] == 7) {
 		window.clearInterval(monsterInterval);
+		window.clearInterval(interval);
 		window.alert("You Lost!");
 
 	}
