@@ -28,6 +28,7 @@ var moved;
 var watch;
 var watchImage;
 var watchTaken;
+var packmanLives;
 
 function Start() {
 	context = canvas.getContext("2d");
@@ -53,7 +54,8 @@ function Start() {
 	redMonster = new Image();
 	redMonster.src = "Resources\\redMonster.png"
 	score = 0;
-	moved=false;
+	moved = false;
+	packmanLives = 5;
 	lastCoinMove = 0;
 	watchTaken = false;
 	pac_color = "yellow";
@@ -87,7 +89,7 @@ function Start() {
 						board[i][j] = 5;
 					}
 
-				}else {
+				} else {
 					board[i][j] = 0;
 				}
 				cnt--;
@@ -189,47 +191,17 @@ function Start() {
 	interval = setInterval(UpdatePosition, 100);
 	monsterInterval = setInterval(UpdateMonsterPosition, 300);
 	coinInterval = setInterval(UpdateCoinPosition, 100);
-	watchInterval = setInterval(UpdateWatchPosition,1000);
+	watchInterval = setInterval(UpdateWatchPosition, 10000);
 }
 
-function isCorner(i, j) {
-	if ((i == 0 || i == 19) && (j == 0 || j == 11)) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
 
-function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 19 + 1);
-	var j = Math.floor(Math.random() * 11 + 1);
-	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 19 + 1);
-		j = Math.floor(Math.random() * 11 + 1);
-	}
-	return [i, j];
-}
 
-function GetKeyPressed() {
-	if (keysDown[up_key]) {
-		return 1;
-	}
-	if (keysDown[down_key]) {
-		return 2;
-	}
-	if (keysDown[left_key]) {
-		return 3;
-	}
-	if (keysDown[right_key]) {
-		return 4;
-	}
-
-}
+//Drawing
 
 function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.innerText = score;
+	lblLives.innerText = packmanLives;
 	lblTime.innerText = Math.floor(time_elapsed);
 	for (var i = 0; i < 20; i++) {
 		for (var j = 0; j < 12; j++) {
@@ -318,6 +290,8 @@ function Draw() {
 	}
 }
 
+//Update Positons
+
 function UpdatePosition() {
 	board[shape.i][shape.j] = 0;
 	var x = GetKeyPressed();
@@ -359,18 +333,26 @@ function UpdatePosition() {
 		showBonus();
 		score = score + 50;
 	}
-	else if(board[shape.i][shape.j] == 10){
+	else if (board[shape.i][shape.j] == 10) {
 		window.clearInterval(watchInterval);
 		showTimeBonus();
 		time_elapsed = time_elapsed + 50;
-		watchTaken=true;
+		watchTaken = true;
 	}
 
 
-	if (board[shape.i][shape.j] == 7) {
+	if (board[shape.i][shape.j] == 7 && packmanLives > 0) {
+		board[shape.i][shape.j] == 0;
+		resetPackman();
+		showMinusLive();
+		Draw();
+	}
+	else if (packmanLives == 0) {
 		window.clearInterval(interval);
 		window.clearInterval(monsterInterval);
-		window.alert("You Lost!");
+		window.clearInterval(watchInterval);
+		window.clearInterval(coinInterval);
+		showLost();
 	}
 	else {
 		board[shape.i][shape.j] = 2;
@@ -380,12 +362,21 @@ function UpdatePosition() {
 
 	var currentTime = new Date();
 	time_elapsed = gameTime - ((currentTime - start_time) / 1000);
-	if (score >= 20 && ((currentTime - start_time) / 1000) <= 10) {
+	if (score < 100 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 10000000) {
+
+	if (time_elapsed <= 0) {
 		window.clearInterval(interval);
-		window.alert("Game completed");
+		window.clearInterval(monsterInterval);
+		window.clearInterval(watchInterval);
+		window.clearInterval(coinInterval);
+		if (score < 100) {
+			showLoseByTime();
+		}
+		else {
+			showWon();
+		}
 	} else {
 		Draw();
 	}
@@ -394,14 +385,14 @@ function UpdatePosition() {
 function UpdateMonsterPosition() {
 	var rnd;
 	monsters.forEach(monster => {
-		if (monster.last == 7 || monster.last == 9) {
+		if (monster.last == 7 || monster.last == 9 || monster.last == 2) {
 			board[monster.i][monster.j] == 0
 		}
-		else {
+		else{
 			board[monster.i][monster.j] = monster.last;
 		}
-		if (shape.i >= monster.i && board[monster.i + 1][monster.j] != 4) {
-			if (shape.j > monster.j && board[monster.i][monster.j + 1] != 4) {
+		if (shape.i >= monster.i && board[monster.i + 1][monster.j] != 4 && board[monster.i + 1][monster.j] != 7) {
+			if (shape.j > monster.j && board[monster.i][monster.j + 1] != 4 && board[monster.i][monster.j + 1] != 7) {
 				rnd = Math.random();
 				if (rnd > 0.9) {
 					monster.i++;
@@ -411,11 +402,17 @@ function UpdateMonsterPosition() {
 				}
 			}
 			else {
-				monster.i++;
+				rnd = Math.random();
+				if (rnd < 0.1 && monster.i > 0) {
+					monster.i--;
+				}
+				else {
+					monster.i++;
+				}
 			}
 		}
-		else if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4) {
-			if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4) {
+		else if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4 && board[monster.i - 1][monster.j] != 7) {
+			if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4 && board[monster.i][monster.j - 1] != 7) {
 				rnd = Math.random();
 				if (rnd > 0.9) {
 					monster.i--;
@@ -428,8 +425,8 @@ function UpdateMonsterPosition() {
 				monster.i--;
 			}
 		}
-		else if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4) {
-			if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4) {
+		else if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4 && board[monster.i][monster.j - 1] != 7) {
+			if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4 && board[monster.i - 1][monster.j] != 7) {
 				rnd = Math.random();
 				if (rnd > 0.9) {
 					monster.j--;
@@ -442,8 +439,8 @@ function UpdateMonsterPosition() {
 				monster.j--;
 			}
 		}
-		else if (shape.j >= monster.j && board[monster.i][monster.j + 1] != 4) {
-			if (shape.i > monster.i && board[monster.i + 1][monster.j] != 4) {
+		else if (shape.j >= monster.j && board[monster.i][monster.j + 1] != 4 && board[monster.i][monster.j + 1] != 7) {
+			if (shape.i > monster.i && board[monster.i + 1][monster.j] != 4 && board[monster.i + 1][monster.j] != 7) {
 				rnd = Math.random();
 				if (rnd > 0.9) {
 					monster.j++;
@@ -454,7 +451,7 @@ function UpdateMonsterPosition() {
 			}
 			else {
 				rnd = Math.random();
-				if (rnd < 0.3) {
+				if (rnd < 0.1 && monster.j > 0) {
 					monster.j--;
 				}
 				else {
@@ -466,29 +463,27 @@ function UpdateMonsterPosition() {
 		monster.last = board[monster.i][monster.j];
 		board[monster.i][monster.j] = 7;
 
+		
 
 	});
 	if (board[shape.i][shape.j] == 7) {
-		window.clearInterval(monsterInterval);
-		window.clearInterval(interval);
-		window.alert("You Lost!");
-
+		board[shape.i][shape.j] == 0;
+		resetPackman();
+		showMinusLive();
 	}
-	else {
-		Draw();
-	}
+	Draw();
 }
 
 
 function UpdateCoinPosition() {
-	moved =false;
-	 
+	moved = false;
+
 	var repeatMove = Math.random();
 	if (repeatMove > 0.7 || lastCoinMove == 0) {
 		lastCoinMove = Math.floor(Math.random() * 4) + 1;
 	}
 
-	if (lastCoinMove == 2 && board[coin.i + 1][coin.j] != 4 && coin.i < 19) {
+	if (lastCoinMove == 2 && coinCanMove(coin.i + 1, coin.j) && coin.i < 19) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] == 0
 		}
@@ -499,7 +494,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = 2;
 		moved = true;
 	}
-	else if (lastCoinMove == 1 && board[coin.i - 1][coin.j] != 4 && coin.i > 0) {
+	else if (lastCoinMove == 1 && coinCanMove(coin.i - 1, coin.j) && coin.i > 0) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] == 0
 		}
@@ -510,7 +505,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = 1;
 		moved = true;
 	}
-	else if (lastCoinMove == 3 && board[coin.i][coin.j - 1] != 4 && coin.j > 0) {
+	else if (lastCoinMove == 3 && coinCanMove(coin.i, coin.j - 1) && coin.j > 0) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] == 0
 		}
@@ -521,7 +516,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = 3;
 		moved = true;
 	}
-	else if (lastCoinMove == 4 && board[coin.i][coin.j + 1] != 4 && coin.j < 11) {
+	else if (lastCoinMove == 4 && coinCanMove(coin.i, coin.j + 1) && coin.j < 11) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] == 0
 		}
@@ -532,41 +527,86 @@ function UpdateCoinPosition() {
 		lastCoinMove = 4;
 		moved = true;
 	}
-
-
-
 	if (board[coin.i][coin.j] == 2) {
 		window.clearInterval(coinInterval);
 		showBonus();
 		score = score + 50;
 	}
-
-	if(moved){
-	coin.last = board[coin.i][coin.j];
-	board[coin.i][coin.j] = 9;
+	if (moved) {
+		coin.last = board[coin.i][coin.j];
+		board[coin.i][coin.j] = 9;
 	}
-	
-
-
-
 	Draw();
-
 }
 
-function UpdateWatchPosition(){
-	if(!watchTaken){
+function UpdateWatchPosition() {
+	if (!watchTaken) {
 		var emptyCell = findRandomEmptyCell(board);
 		var i = emptyCell[0];
 		var j = emptyCell[1];
-		//board[i][j] = 10;
-		//setTimeout(() => { return; }, 2000);
-		//board[i][j] = 0;
-		//bool add boll remove
+		board[i][j] = 10;
+		setTimeout(() => { board[i][j] = 0; }, 5000);
 	}
 }
 
 
-function showTimeBonus(){
+
+//Other Helping Functions
+
+function resetPackman() {
+	var emptyCell = findRandomEmptyCell(board);
+	shape.i = emptyCell[0];
+	shape.j = emptyCell[1];
+	board[emptyCell[0]][emptyCell[1]] = 2;
+	packmanLives--;
+}
+
+
+function coinCanMove(i, j) {
+	if (board[i][j] != 4 && board[i][j] != 7 && board[i][j] != 2) {
+		return true;
+	}
+	return false;
+}
+
+function isCorner(i, j) {
+	if ((i == 0 || i == 19) && (j == 0 || j == 11)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function findRandomEmptyCell(board) {
+	var i = Math.floor(Math.random() * 19 + 1);
+	var j = Math.floor(Math.random() * 11 + 1);
+	while (board[i][j] != 0) {
+		i = Math.floor(Math.random() * 19 + 1);
+		j = Math.floor(Math.random() * 11 + 1);
+	}
+	return [i, j];
+}
+
+function GetKeyPressed() {
+	if (keysDown[up_key]) {
+		return 1;
+	}
+	if (keysDown[down_key]) {
+		return 2;
+	}
+	if (keysDown[left_key]) {
+		return 3;
+	}
+	if (keysDown[right_key]) {
+		return 4;
+	}
+
+}
+
+//Animation
+
+function showTimeBonus() {
 	var ml4 = {};
 	ml4.opacityIn = [0, 1];
 	ml4.scaleIn = [0.2, 1];
@@ -595,6 +635,67 @@ function showTimeBonus(){
 			delay: 500
 		});
 }
+
+function showWon() {
+	var ml4 = {};
+	ml4.opacityIn = [0, 1];
+	ml4.scaleIn = [0.2, 1];
+	ml4.scaleOut = 3;
+	ml4.durationIn = 800;
+	ml4.durationOut = 600;
+	ml4.delay = 500;
+
+	anime.timeline({ loop: 3 })
+		.add({
+			targets: '.ml4 .letters-2',
+			opacity: ml4.opacityIn,
+			scale: ml4.scaleIn,
+			duration: ml4.durationIn
+		}).add({
+			targets: '.ml4 .letters-2',
+			opacity: 0,
+			scale: ml4.scaleOut,
+			duration: ml4.durationOut,
+			easing: "easeInExpo",
+			delay: ml4.delay
+		}).add({
+			targets: '.ml4',
+			opacity: 0,
+			duration: 500,
+			delay: 500
+		});
+}
+
+function showLost() {
+	var ml4 = {};
+	ml4.opacityIn = [0, 1];
+	ml4.scaleIn = [0.2, 1];
+	ml4.scaleOut = 3;
+	ml4.durationIn = 800;
+	ml4.durationOut = 600;
+	ml4.delay = 500;
+
+	anime.timeline({ loop: 3 })
+		.add({
+			targets: '.ml4 .letters-3',
+			opacity: ml4.opacityIn,
+			scale: ml4.scaleIn,
+			duration: ml4.durationIn
+		}).add({
+			targets: '.ml4 .letters-3',
+			opacity: 0,
+			scale: ml4.scaleOut,
+			duration: ml4.durationOut,
+			easing: "easeInExpo",
+			delay: ml4.delay
+		}).add({
+			targets: '.ml4',
+			opacity: 0,
+			duration: 500,
+			delay: 500
+		});
+}
+
 
 function showBonus() {
 	var ml4 = {};
@@ -624,28 +725,66 @@ function showBonus() {
 			duration: 500,
 			delay: 500
 		});
-	//   }).add({
-	//     targets: '.ml4 .letters-2',
-	//     opacity: ml4.opacityIn,
-	//     scale: ml4.scaleIn,
-	//     duration: ml4.durationIn
-	//   }).add({
-	//     targets: '.ml4 .letters-2',
-	//     opacity: 0,
-	//     scale: ml4.scaleOut,
-	//     duration: ml4.durationOut,
-	//     easing: "easeInExpo",
-	//     delay: ml4.delay
-	//   }).add({
-	//     targets: '.ml4 .letters-3',
-	//     opacity: ml4.opacityIn,
-	//     scale: ml4.scaleIn,
-	//     duration: ml4.durationIn
-	//   }).add({
-	//     targets: '.ml4 .letters-3',
-	//     opacity: 0,
-	//     scale: ml4.scaleOut,
-	//     duration: ml4.durationOut,
-	//     easing: "easeInExpo",
-	//     delay: ml4.delay
+}
+
+function showLoseByTime() {
+	document.getElementById("pop5").innerText = "You are better than " + score + " points!";
+	var ml4 = {};
+	ml4.opacityIn = [0, 1];
+	ml4.scaleIn = [0.2, 1];
+	ml4.scaleOut = 3;
+	ml4.durationIn = 800;
+	ml4.durationOut = 600;
+	ml4.delay = 500;
+
+	anime.timeline({ loop: 3 })
+		.add({
+			targets: '.ml4 .letters-5',
+			opacity: ml4.opacityIn,
+			scale: ml4.scaleIn,
+			duration: ml4.durationIn
+		}).add({
+			targets: '.ml4 .letters-5',
+			opacity: 0,
+			scale: ml4.scaleOut,
+			duration: ml4.durationOut,
+			easing: "easeInExpo",
+			delay: ml4.delay
+		}).add({
+			targets: '.ml4',
+			opacity: 0,
+			duration: 500,
+			delay: 500
+		});
+}
+
+function showMinusLive() {
+	document.getElementById("pop6").innerText = "Ouchhh!! Only " + packmanLives + " Lives Remains";
+	var ml4 = {};
+	ml4.opacityIn = [0, 1];
+	ml4.scaleIn = [0.2, 1];
+	ml4.scaleOut = 3;
+	ml4.durationIn = 800;
+	ml4.durationOut = 600;
+	ml4.delay = 500;
+
+	anime.timeline({ loop: 1 })
+		.add({
+			targets: '.ml4 .letters-6',
+			opacity: ml4.opacityIn,
+			scale: ml4.scaleIn,
+			duration: ml4.durationIn
+		}).add({
+			targets: '.ml4 .letters-6',
+			opacity: 0,
+			scale: ml4.scaleOut,
+			duration: ml4.durationOut,
+			easing: "easeInExpo",
+			delay: ml4.delay
+		}).add({
+			targets: '.ml4',
+			opacity: 0,
+			duration: 500,
+			delay: 500
+		});
 }
