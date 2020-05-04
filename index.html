@@ -33,7 +33,13 @@
 <body>
 
 
-	<header id="first">
+	<header id="first"class="dataArea" style="padding: 3px;">
+
+			<img src="Resources/logoPac.jpg" width="400" height="200" >
+			<p >Pacman 2020</p>
+			<p >Created By: Asaf Zaks & Omer Nagar</p>
+
+	</header>
 		<ul id="menu">
 			<li class="menu"><a class ="navItem" onclick="ReturnToMain()">Welcome</a></li>
 			<li class="menu"><a class ="navItem" onclick="SignUp()">Sign-Up</a></li>
@@ -42,12 +48,12 @@
 		</ul>
 		<br>
 		<br>
-		<span id="logo">
+				<br>
 		<br>
-		<br>
-		<img src="Resources/logoPac.jpg" width="400" height="200" >
-		</span>
-			
+				<br>
+		<br>	
+			<br>
+		<br>			
 		<div class="inner dataArea container header-content" id="welcome">
 			
 			<h4>Please press on one of the options to proceed</h4>
@@ -215,7 +221,25 @@
 				<tr>
 					<td><label for="lblLives">LIVES:</label></td>				
 					<td><label id="lblLives" type="text"></label></td>					
-				</tr>				
+				</tr>	
+				
+				
+				<tr>
+					<td><label for="upk">Up key:</label></td>				
+					<td><label id="upk" type="text"></label></td>					
+				</tr>		
+				<tr>
+					<td><label for="dwk">Down key:</label></td>				
+					<td><label id="dwk" type="text"></label></td>					
+				</tr>		
+				<tr>
+					<td><label for="rgk">Right key:</label></td>				
+					<td><label id="rgk" type="text"></label></td>				
+				</tr>		
+				<tr>
+					<td><label for="lfk">Left key:</label></td>				
+					<td><label id="lfk" type="text"></label></td>				
+				</tr>		
 			</table>
 			<canvas id="canvas" height="768" width="1200"></canvas>
 		</div>
@@ -230,7 +254,60 @@
 			<span id="pop6" class="letters letters-6">Ouchhh!! Only X Lives Remains</span>
 		</h1>
 
-	</header>
+		<div id="myModal" class="modal">
+
+			<!-- Modal content -->
+			<div class="modal-content">
+			  <div class="modal-header">
+				<span class="close">&times;</span>
+				<h2>About</h2>
+			  </div>
+			  <div class="modal-body">
+				<p>Some text in the Modal Body</p>
+				<p>Some other text...</p>
+			  </div>
+			</div>
+		  
+		  </div>
+
+		  
+		  <script>
+	
+			// Get the modal
+		  var modal = document.getElementById("myModal");
+		  
+		  // Get the button that opens the modal
+		  
+		  // Get the <span> element that closes the modal
+		  var span = document.getElementsByClassName("close")[0];
+		  
+		  // When the user clicks the button, open the modal 
+		  
+		  
+		  // When the user clicks on <span> (x), close the modal
+		  span.onclick = function() {
+			modal.style.display = "none";
+		  }
+		  
+		  // When the user clicks anywhere outside of the modal, close it
+		  window.onclick = function(event) {
+			if (event.target == modal) {
+			  modal.style.display = "none";
+			}
+		  }
+		  
+		  function About() {
+			modal.style.display = "block";
+		  };
+		  </script>
+
+		<footer id="footer">
+			This page has been created by Israel BGU Information System Department students.
+			<br>
+			Contact us by email: <a href="mailto:zaksas@post.bgu.ac.il">Asaf Zaks</a> <a href="mailto:omernag@post.bgu.ac.il">Omer Nagar</a>
+		</footer> 
+
+
 
 </body>
 

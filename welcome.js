@@ -5,6 +5,16 @@ $(document).ready(function () {
   $(".returnToStart").click(ReturnToMain)
   localStorage.setItem("p", "p");
 
+  addEventListener(
+		"keydown",
+		function (e) {
+			if(e.code == "Escape"){
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+      }
+		}
+	);
+
 
 });
 $(function () {
@@ -41,11 +51,7 @@ function SignUp() {
   $("#signupdiv").show();
 };
 
-function About() {
-  $("div").hide();
-  $("#logo").show();
-  $("#aboutdiv").show();
-};
+
 
 function ReturnToMain() {
   $("div").hide();
@@ -254,3 +260,5 @@ $.validator.addMethod('noNumbers', function (value, element) {
   return this.optional(element) || (value.match(/[a-zA-Z]/) && !value.match(/[0-9]/));
 },
   'Password must contain at only alphabetic characters.');
+
+
