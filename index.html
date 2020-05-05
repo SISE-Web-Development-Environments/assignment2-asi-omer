@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
 
 <head>
 
@@ -32,6 +32,7 @@
 
 <body>
 
+	<div id="background"></div>			
 
 	<header id="first"class="dataArea" style="padding: 3px;">
 
@@ -53,7 +54,7 @@
 				<br>
 		<br>	
 			<br>
-		<br>			
+		<br>
 		<div class="inner dataArea container header-content" id="welcome">
 			
 			<h4>Please press on one of the options to proceed</h4>
@@ -143,7 +144,7 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="balls_num">Enter Num Of Balls</label>
+						<label for="balls_num">Enter Num Of candies</label>
 					</td>
 					<td>
 						<input id="balls_num" type="range" min="50" max="90" step="1" value="55" data-thumbwidth="20">
@@ -199,13 +200,19 @@
 			<button class="opt" onclick="play()">Play</button>
 
 		</div>
-		<div id="aboutdiv" class="inner  header-content startHidden dataArea">
-			<h1 style = "text-align: center">About</h1>
-		</div>
 		<div id="game" class="startHidden">
 			<br>
 			<br>
 			<table>
+				<tr>
+					<td style="font-size: 20px;">
+			<table id="settingTable">
+				<tr >
+					<td>	<h2>Game:</h2></td>
+				
+					</tr>	
+
+				<tr>
 				<tr>
 					<td><label for="lblUser">USER:</label></td>				
 					<td><label id="lblUser" type="text"></label></td>					
@@ -217,11 +224,14 @@
 				<tr>
 					<td><label for="lblTime">TIME:</label></td>				
 					<td><label id="lblTime" type="text"></label></td>					
-				</tr>	
+				</tr>
 				<tr>
 					<td><label for="lblLives">LIVES:</label></td>				
 					<td><label id="lblLives" type="text"></label></td>					
 				</tr>	
+				<tr >
+					<td>	<h2>Settings:</h2></td>				
+					</tr>		
 				
 				
 				<tr>
@@ -239,13 +249,46 @@
 				<tr>
 					<td><label for="lfk">Left key:</label></td>				
 					<td><label id="lfk" type="text"></label></td>				
+				</tr>
+
+				<tr>
+					<td><label for="numb">Num of candies:</label></td>				
+					<td><label id="numb" type="text"></label></td>					
 				</tr>		
+				<tr>
+					<td><label for="cc1">5 Pts Candy:</label></td>				
+					<td><button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
+						id=cc1 disabled></button></td>					
+				</tr>		
+				<tr>
+					<td><label for="cc2">15 Pts Candy:</label></td>				
+					<td><button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
+						id=cc2 disabled></button></td>				
+				</tr>		
+				<tr>
+					<td><label for="cc3">25 Pts Candy:</label></td>				
+					<td><button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
+						id=cc3 disabled></button></td>				
+				</tr>
+
+				
+				
 			</table>
+			<br>
+			<br>
+			<br>
+			<br>
+
+			<br>
+			<br>
+			<button class="opt" onclick="Start()">Restart</button>
+		</td>
+		<td>
 			<canvas id="canvas" height="768" width="1200"></canvas>
-		</div>
-
-
-		<h1 class="ml4">
+			
+		</td>
+		<td>
+			<h1 class="ml4">
 			<span class="letters letters-1">Bonus</span>
 			<span class="letters letters-2">Winner!!!</span>
 			<span class="letters letters-3">Loser!</span>
@@ -253,22 +296,34 @@
 			<span id="pop5" class="letters letters-5">You are better than X points!</span>
 			<span id="pop6" class="letters letters-6">Ouchhh!! Only X Lives Remains</span>
 		</h1>
+	</td>
+		</tr>
+			</table>
+		</div>
 
-		<div id="myModal" class="modal">
+	
 
-			<!-- Modal content -->
-			<div class="modal-content">
-			  <div class="modal-header">
-				<span class="close">&times;</span>
-				<h2>About</h2>
-			  </div>
-			  <div class="modal-body">
-				<p>Some text in the Modal Body</p>
-				<p>Some other text...</p>
-			  </div>
-			</div>
-		  
+	<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content">
+		  <div class="modal-header">
+			<span class="close">&times;</span>
+			<h2>About</h2>
 		  </div>
+		  <div class="modal-body">
+			<p>Created By Asaf Zaks and Omer Nagar</p>
+			<p></p>
+			<p>We used JQuery validate & datepicker plugins in order to create this site,</p>
+			<p>and templates such forms and nav-bar we found online.</p>
+			<p></p>
+			<p>During our work, we mostly had troubles with css design & game bugs fixing.</p>
+		  </div>
+		</div>
+	  
+	  </div>
+
+
 
 		  
 		  <script>
@@ -298,6 +353,10 @@
 		  
 		  function About() {
 			modal.style.display = "block";
+			modal.getElementsByClassName("modal-content")[0].style.display = "block";
+			modal.getElementsByClassName("modal-header")[0].style.display = "block";
+			modal.getElementsByClassName("modal-body")[0].style.display = "block";
+
 		  };
 		  </script>
 

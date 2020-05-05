@@ -10,6 +10,7 @@ $(document).ready(function () {
 		function (e) {
 			if(e.code == "Escape"){
         var modal = document.getElementById("myModal");
+
         modal.style.display = "none";
       }
 		}
@@ -42,12 +43,14 @@ $(function () {
 function SignIn() {
   $("div").hide();
   $("#logo").show();
+  $("#background").show();
   $("#signindiv").show();
 };
 
 function SignUp() {
   $("div").hide();
   $("#logo").show();
+  $("#background").show();
   $("#signupdiv").show();
 };
 
@@ -56,12 +59,14 @@ function SignUp() {
 function ReturnToMain() {
   $("div").hide();
   $("#logo").show();
+  $("#background").show();
   $("#welcome").show();
 };
 
 function showOptions() {
   $("div").hide();
   $("#logo").show();
+  $("#background").show();
   $("#options").show();
   if (localStorage.getItem(document.getElementById("up_key").value) === null) {
     localStorage.setItem("up_key", "ArrowUp");
@@ -94,6 +99,17 @@ function play(){
   sessionStorage.setItem("pts25_color",document.getElementById("pts25_color").style.backgroundColor);
   sessionStorage.setItem("game_time",document.getElementById("game_time_o").innerText);
   sessionStorage.setItem("monster_num",document.getElementById("monster_num_o").innerText);
+
+  upk.innerText = localStorage.getItem("up_key");
+  dwk.innerText = localStorage.getItem("down_key");
+  rgk.innerText = localStorage.getItem("right_key");
+  lfk.innerText = localStorage.getItem("left_key");
+
+  numb.innerText = sessionStorage.getItem("balls_num");
+  cc1.style.backgroundColor = sessionStorage.getItem("pts5_color");
+  cc2.style.backgroundColor = sessionStorage.getItem("pts15_color");
+  cc3.style.backgroundColor = sessionStorage.getItem("pts25_color");
+
 
   startGame()
  
@@ -142,6 +158,7 @@ function random_rgba() {
 function startGame(){
   $("div").hide()
   $("#logo").hide();
+  $("#background").show();
   $("#game").show()
   Start()
 }
