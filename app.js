@@ -30,6 +30,7 @@ var watchImage;
 var watchTaken;
 var packmanLives;
 
+
 function Start() {
 	context = canvas.getContext("2d");
 	up_key = localStorage.getItem("up_key");
@@ -48,6 +49,7 @@ function Start() {
 	board = new Array();
 	coin = new Object();
 	watchImage = new Image();
+
 	watchImage.src = "Resources\\watch.png"
 	runningCoin = new Image();
 	runningCoin.src = "Resources\\coin.png"
@@ -342,10 +344,9 @@ function UpdatePosition() {
 
 
 	if (board[shape.i][shape.j] == 7 && packmanLives > 0) {
-		board[shape.i][shape.j] == 0;
+		board[shape.i][shape.j] = 0;
 		resetPackman();
 		showMinusLive();
-		Draw();
 	}
 	else if (packmanLives == 0) {
 		window.clearInterval(interval);
@@ -386,7 +387,7 @@ function UpdateMonsterPosition() {
 	var rnd;
 	monsters.forEach(monster => {
 		if (monster.last == 7 || monster.last == 9 || monster.last == 2) {
-			board[monster.i][monster.j] == 0
+			board[monster.i][monster.j] = 0
 		}
 		else{
 			board[monster.i][monster.j] = monster.last;
@@ -467,7 +468,7 @@ function UpdateMonsterPosition() {
 
 	});
 	if (board[shape.i][shape.j] == 7) {
-		board[shape.i][shape.j] == 0;
+		board[shape.i][shape.j] = 0;
 		resetPackman();
 		showMinusLive();
 	}
@@ -485,7 +486,7 @@ function UpdateCoinPosition() {
 
 	if (lastCoinMove == 2 && coinCanMove(coin.i + 1, coin.j) && coin.i < 19) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
-			board[coin.i][coin.j] == 0
+			board[coin.i][coin.j] = 0
 		}
 		else {
 			board[coin.i][coin.j] = coin.last;
@@ -496,7 +497,7 @@ function UpdateCoinPosition() {
 	}
 	else if (lastCoinMove == 1 && coinCanMove(coin.i - 1, coin.j) && coin.i > 0) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
-			board[coin.i][coin.j] == 0
+			board[coin.i][coin.j] = 0
 		}
 		else {
 			board[coin.i][coin.j] = coin.last;
@@ -507,7 +508,7 @@ function UpdateCoinPosition() {
 	}
 	else if (lastCoinMove == 3 && coinCanMove(coin.i, coin.j - 1) && coin.j > 0) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
-			board[coin.i][coin.j] == 0
+			board[coin.i][coin.j] = 0
 		}
 		else {
 			board[coin.i][coin.j] = coin.last;
@@ -518,7 +519,7 @@ function UpdateCoinPosition() {
 	}
 	else if (lastCoinMove == 4 && coinCanMove(coin.i, coin.j + 1) && coin.j < 11) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
-			board[coin.i][coin.j] == 0
+			board[coin.i][coin.j] = 0
 		}
 		else {
 			board[coin.i][coin.j] = coin.last;
@@ -559,6 +560,7 @@ function resetPackman() {
 	shape.j = emptyCell[1];
 	board[emptyCell[0]][emptyCell[1]] = 2;
 	packmanLives--;
+	died = false;
 }
 
 
@@ -628,11 +630,7 @@ function showTimeBonus() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		}).add({
-			targets: '.ml4',
-			opacity: 0,
-			duration: 500,
-			delay: 500
+		
 		});
 }
 
@@ -658,11 +656,7 @@ function showWon() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		}).add({
-			targets: '.ml4',
-			opacity: 0,
-			duration: 500,
-			delay: 500
+		
 		});
 }
 
@@ -688,11 +682,7 @@ function showLost() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		}).add({
-			targets: '.ml4',
-			opacity: 0,
-			duration: 500,
-			delay: 500
+		
 		});
 }
 
@@ -719,11 +709,7 @@ function showBonus() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		}).add({
-			targets: '.ml4',
-			opacity: 0,
-			duration: 500,
-			delay: 500
+		
 		});
 }
 
@@ -750,11 +736,7 @@ function showLoseByTime() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		}).add({
-			targets: '.ml4',
-			opacity: 0,
-			duration: 500,
-			delay: 500
+		
 		});
 }
 
@@ -781,10 +763,6 @@ function showMinusLive() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		}).add({
-			targets: '.ml4',
-			opacity: 0,
-			duration: 500,
-			delay: 500
+		
 		});
 }
