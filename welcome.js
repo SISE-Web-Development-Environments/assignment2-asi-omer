@@ -110,7 +110,7 @@ function play(){
   cc2.style.backgroundColor = sessionStorage.getItem("pts15_color");
   cc3.style.backgroundColor = sessionStorage.getItem("pts25_color");
 
-
+  stopGameRunning();
   startGame()
  
 }
@@ -160,7 +160,7 @@ function startGame(){
   $("#logo").hide();
   $("#background").show();
   $("#game").show()
-  Start()
+  CheckStart()
 }
 
 

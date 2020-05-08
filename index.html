@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html >
+<html>
 
 <head>
-
 	<link rel="stylesheet" type="text/css" href="styles.css" />
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
@@ -21,7 +20,6 @@
 		});
 	</script>
 
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 
 	<script type="text/javascript" src="./welcome.js"></script>
@@ -32,339 +30,344 @@
 
 <body>
 
-	<div id="background"></div>			
+	<div id="background"></div>
 
-	<header id="first"class="dataArea" style="padding: 3px;">
-
-			<img src="Resources/logoPac.jpg" width="400" height="200" >
-			<p >Pacman 2020</p>
-			<p >Created By: Asaf Zaks & Omer Nagar</p>
-
-	</header>
-		<ul id="menu">
-			<li class="menu"><a class ="navItem" onclick="ReturnToMain()">Welcome</a></li>
-			<li class="menu"><a class ="navItem" onclick="SignUp()">Sign-Up</a></li>
-			<li class="menu"><a class ="navItem" onclick="SignIn()">Sign-In</a></li>
-			<li class="menu"><a class ="navItem" onclick="About()">About</a></li>
-		</ul>
-		<br>
-		<br>
-				<br>
-		<br>
-				<br>
-		<br>	
-			<br>
-		<br>
-		<div class="inner dataArea container header-content" id="welcome">
-			
-			<h4>Please press on one of the options to proceed</h4>
-			<button id="signup" class="welcomeButton btn btn-primary btn-xl">Sign Up</button>
-			&nbsp; &nbsp;
-			<button id="signin" class="welcomeButton btn btn-primary btn-xl">Sign In</button>
-		</div>
-		<div id="signindiv" class="inner startHidden dataArea container header-content">
-			<h1 style = "text-align: center">Sign In</h1>
-			<form action="" name="login">
-				<label for="username">User Name</label>
-				<input type="text" name="username" id="sign_in_username" placeholder="John123" />
-
-				<label for="password">Password</label>
-				<input type="password" name="password" id="sign_in_password"
-					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
-
-				<button type="submit">Login</button>
-
-				<button type="button" class="returnToStart">Return</button>
-
-			</form>
-		</div>
-		<div id="signupdiv" class="inner container header-content startHidden dataArea">
-			<h1 style = "text-align: center">Registration</h1>
-			<form action="" name="registration">
-
-				<label for="username">User Name</label>
-				<input type="text" name="username" id="sign_up_username" placeholder="John123" />
-
-				<label for="password">Password</label>
-				<input type="password" name="password" id="sign_up_password"
-					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
-
-				<label for="firstname">First Name</label>
-				<input type="text" name="firstname" id="firstname" placeholder="John" />
-
-				<label for="lastname">Last Name</label>
-				<input type="text" name="lastname" id="lastname" placeholder="Doe" />
-
-				<label for="email">Email</label>
-				<input type="email" name="email" id="email" placeholder="john@doe.com" />
-
-				<label for="date">Birthday</label>
-				<input type="text" id="datepicker" name="date" placeholder="mm/dd/yyyy">
-
-				<button type="submit">Register</button>
-
-				<button  type="button" class="returnToStart">Return</button>
-
-			</form>
-		</div>
-		<div id="options" class="inner container header-content startHidden dataArea">
-			<h1 style = "text-align: center">Options</h1>
-			<table id = "optionsTable" style = "text-align:left;" >
-				<tr>
-					<td>
-						<label for="up">Enter Up Key</label>
-					</td>
-					<td>
-						<input type="text" name="up" id="up_key" onkeydown="getKey(event,id)" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="down">Enter Down Key</label>
-					</td>
-					<td>
-						<input type="text" name="down" id="down_key" onkeydown="getKey(event,id)" readonly />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="right">Enter Right Key</label>
-					</td>
-					<td>
-						<input type="text" name="right" id="right_key" onkeydown="getKey(event,id)" readonly />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="left">Enter Left Key</label>
-					</td>
-					<td>
-						<input type="text" name="left" id="left_key" onkeydown="getKey(event,id)" readonly />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="balls_num">Enter Num Of candies</label>
-					</td>
-					<td>
-						<input id="balls_num" type="range" min="50" max="90" step="1" value="55" data-thumbwidth="20">
-						<output name="rangeVal" id="balls_num_o">55</output>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="balls_color">Choose Balls Color</label>
-					</td>
-					<td>
-						<table>
-							<td><label style="width: 2px;" for="pts5_color">5 Pts</label>
-								<button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
-								id="pts5_color"></button>
-							</td>
-							<td>
-								<label for="pts15_color">15 Pts</label>
-								<button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
-									id=pts15_color ></button>
-							</td>
-							<td>
-								<label for="pts25_color">25 Pts</label>
-								<button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
-									id="pts25_color"></button>
-							</td>
-						</table>
-					</td>
-
-				</tr>
-				<tr>
-					<td>
-						<label for="game_time(sec)">Enter Game Time (Seconds)</label>
-					</td>
-					<td>
-						<input id="game_time" type="range" min="60" max="120" step="10" value="300"
-							data-thumbwidth="20">
-						<output name="rangeVal" id="game_time_o">300</output>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="monster_num">Choose Amount Of Monster</label>
-					</td>
-					<td>
-						<input id="monster_num" type="range" min="1" max="4" step="1" value="1" data-thumbwidth="20">
-						<output name="rangeVal" id="monster_num_o">1</output>
-					</td>
-				</tr>
-			</table>
-			<button class="opt" onclick="random()">Set Random</button>
-
-			<button class="opt" onclick="play()">Play</button>
-
-		</div>
-		<div id="game" class="startHidden">
-			<br>
-			<br>
-			<table>
-				<tr>
-					<td style="font-size: 20px;">
-			<table id="settingTable">
-				<tr >
-					<td>	<h2>Game:</h2></td>
-				
-					</tr>	
-
-				<tr>
-				<tr>
-					<td><label for="lblUser">USER:</label></td>				
-					<td><label id="lblUser" type="text"></label></td>					
-				</tr>
-				<tr>
-					<td><label for="lblScore">SCORE:</label></td>				
-					<td><label id="lblScore" type="text"></label></td>					
-				</tr>
-				<tr>
-					<td><label for="lblTime">TIME:</label></td>				
-					<td><label id="lblTime" type="text"></label></td>					
-				</tr>
-				<tr>
-					<td><label for="lblLives">LIVES:</label></td>				
-					<td><label id="lblLives" type="text"></label></td>					
-				</tr>	
-				<tr >
-					<td>	<h2>Settings:</h2></td>				
-					</tr>		
-				
-				
-				<tr>
-					<td><label for="upk">Up key:</label></td>				
-					<td><label id="upk" type="text"></label></td>					
-				</tr>		
-				<tr>
-					<td><label for="dwk">Down key:</label></td>				
-					<td><label id="dwk" type="text"></label></td>					
-				</tr>		
-				<tr>
-					<td><label for="rgk">Right key:</label></td>				
-					<td><label id="rgk" type="text"></label></td>				
-				</tr>		
-				<tr>
-					<td><label for="lfk">Left key:</label></td>				
-					<td><label id="lfk" type="text"></label></td>				
-				</tr>
-
-				<tr>
-					<td><label for="numb">Num of candies:</label></td>				
-					<td><label id="numb" type="text"></label></td>					
-				</tr>		
-				<tr>
-					<td><label for="cc1">5 Pts Candy:</label></td>				
-					<td><button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
-						id=cc1 disabled></button></td>					
-				</tr>		
-				<tr>
-					<td><label for="cc2">15 Pts Candy:</label></td>				
-					<td><button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
-						id=cc2 disabled></button></td>				
-				</tr>		
-				<tr>
-					<td><label for="cc3">25 Pts Candy:</label></td>				
-					<td><button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
-						id=cc3 disabled></button></td>				
-				</tr>
-
-				
-				
-			</table>
-			<br>
-			<br>
-			<br>
-			<br>
-
-			<br>
-			<br>
-			<button class="opt" onclick="Start()">Restart</button>
-		</td>
-		<td>
-			<canvas id="canvas" height="768" width="1200"></canvas>
-			
-		</td>
-		<td>
-			<h1 class="ml4">
-			<span class="letters letters-1">Bonus</span>
-			<span class="letters letters-2">Winner!!!</span>
-			<span class="letters letters-3">Loser!</span>
-			<span class="letters letters-4">Time Bonus</span>
-			<span id="pop5" class="letters letters-5">You are better than X points!</span>
-			<span id="pop6" class="letters letters-6">Ouchhh!! Only X Lives Remains</span>
-		</h1>
-	</td>
+	<header id="first" class="dataArea" style="padding: 3px;">
+		<table style="text-align: center; align-content: center;">
+		<tr>
+			<td>
+				<img src="Resources/logoPac.jpg" width="200" height="100">
+			</td>
+			<td>
+			<p style="margin: 0pt;">Pacman 2020</p>
+			<p style="margin: 0pt;">Created By: Asaf Zaks & Omer Nagar</p>
+			</td>
 		</tr>
-			</table>
-		</div>
+		</table>
+	</header>
+	<ul id="menu">
+		<li class="menu"><a class="navItem" onclick="ReturnToMain()">Welcome</a></li>
+		<li class="menu"><a class="navItem" onclick="SignUp()">Sign-Up</a></li>
+		<li class="menu"><a class="navItem" onclick="SignIn()">Sign-In</a></li>
+		<li class="menu"><a class="navItem" onclick="About()">About</a></li>
+	</ul>
 
-	
+	<br>
+	<br>
+	<div class="inner dataArea container header-content" id="welcome">
+
+		<h4>Please press on one of the options to proceed</h4>
+		<button id="signup" class="welcomeButton btn btn-primary btn-xl">Sign Up</button>
+		&nbsp; &nbsp;
+		<button id="signin" class="welcomeButton btn btn-primary btn-xl">Sign In</button>
+	</div>
+	<div id="signindiv" class="inner startHidden dataArea container header-content">
+		<h1 style="text-align: center">Sign In</h1>
+		<form action="" name="login">
+			<label for="username">User Name</label>
+			<input type="text" name="username" id="sign_in_username" placeholder="John123" />
+
+			<label for="password">Password</label>
+			<input type="password" name="password" id="sign_in_password"
+				placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
+
+			<button type="submit">Login</button>
+
+			<button type="button" class="returnToStart">Return</button>
+
+		</form>
+	</div>
+	<div id="signupdiv" class="inner container header-content startHidden dataArea">
+		<h1 style="text-align: center">Registration</h1>
+		<form action="" name="registration">
+
+			<label for="username">User Name</label>
+			<input type="text" name="username" id="sign_up_username" placeholder="John123" />
+
+			<label for="password">Password</label>
+			<input type="password" name="password" id="sign_up_password"
+				placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" />
+
+			<label for="firstname">First Name</label>
+			<input type="text" name="firstname" id="firstname" placeholder="John" />
+
+			<label for="lastname">Last Name</label>
+			<input type="text" name="lastname" id="lastname" placeholder="Doe" />
+
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" placeholder="john@doe.com" />
+
+			<label for="date">Birthday</label>
+			<input type="text" id="datepicker" name="date" placeholder="mm/dd/yyyy">
+
+			<button type="submit">Register</button>
+
+			<button type="button" class="returnToStart">Return</button>
+
+		</form>
+	</div>
+	<div id="options" class="inner container header-content startHidden dataArea">
+		<h1 style="text-align: center">Options</h1>
+		<table id="optionsTable" style="text-align:left;">
+			<tr>
+				<td>
+					<label for="up">Enter Up Key</label>
+				</td>
+				<td>
+					<input type="text" name="up" id="up_key" onkeydown="getKey(event,id)" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="down">Enter Down Key</label>
+				</td>
+				<td>
+					<input type="text" name="down" id="down_key" onkeydown="getKey(event,id)" readonly />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="right">Enter Right Key</label>
+				</td>
+				<td>
+					<input type="text" name="right" id="right_key" onkeydown="getKey(event,id)" readonly />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="left">Enter Left Key</label>
+				</td>
+				<td>
+					<input type="text" name="left" id="left_key" onkeydown="getKey(event,id)" readonly />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="balls_num">Enter Num Of candies</label>
+				</td>
+				<td>
+					<input id="balls_num" type="range" min="50" max="90" step="1" value="55" data-thumbwidth="20">
+					<output name="rangeVal" id="balls_num_o">55</output>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="balls_color">Choose Balls Color</label>
+				</td>
+				<td>
+					<table>
+						<td><label style="width: 2px;" for="pts5_color">5 Pts</label>
+							<button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
+								id="pts5_color"></button>
+						</td>
+						<td>
+							<label for="pts15_color">15 Pts</label>
+							<button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
+								id=pts15_color></button>
+						</td>
+						<td>
+							<label for="pts25_color">25 Pts</label>
+							<button class="jscolor {valueElement:null,value:'66ccff'}" style="width:50px; height:20px;"
+								id="pts25_color"></button>
+						</td>
+					</table>
+				</td>
+
+			</tr>
+			<tr>
+				<td>
+					<label for="game_time(sec)">Enter Game Time (Seconds)</label>
+				</td>
+				<td>
+					<input id="game_time" type="range" min="60" max="120" step="10" value="300" data-thumbwidth="20">
+					<output name="rangeVal" id="game_time_o">300</output>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="monster_num">Choose Amount Of Monster</label>
+				</td>
+				<td>
+					<input id="monster_num" type="range" min="1" max="4" step="1" value="1" data-thumbwidth="20">
+					<output name="rangeVal" id="monster_num_o">1</output>
+				</td>
+			</tr>
+		</table>
+		<button class="opt" onclick="random()">Set Random</button>
+
+		<button class="opt" onclick="play()">Play</button>
+
+	</div>
+	<div id="game" class="startHidden">
+		<br>
+		<br>
+		<table>
+			<tr>
+				<td style="font-size: 20px;">
+					<table id="settingTable">
+						<tr>
+							<td>
+								<h2>Game:</h2>
+							</td>
+
+						</tr>
+
+						<tr>
+						<tr>
+							<td><label for="lblUser">USER:</label></td>
+							<td><label id="lblUser" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="lblScore">SCORE:</label></td>
+							<td><label id="lblScore" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="lblTime">TIME:</label></td>
+							<td><label id="lblTime" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="lblLives">LIVES:</label></td>
+							<td><label id="lblLives" type="text"></label></td>
+						</tr>
+						<tr>
+							<td>
+								<h2>Settings:</h2>
+							</td>
+						</tr>
+
+
+						<tr>
+							<td><label for="upk">Up key:</label></td>
+							<td><label id="upk" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="dwk">Down key:</label></td>
+							<td><label id="dwk" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="rgk">Right key:</label></td>
+							<td><label id="rgk" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="lfk">Left key:</label></td>
+							<td><label id="lfk" type="text"></label></td>
+						</tr>
+
+						<tr>
+							<td><label for="numb">Num of candies:</label></td>
+							<td><label id="numb" type="text"></label></td>
+						</tr>
+						<tr>
+							<td><label for="cc1">5 Pts Candy:</label></td>
+							<td><button class="jscolor {valueElement:null,value:'66ccff'}"
+									style="width:50px; height:20px;" id=cc1 disabled></button></td>
+						</tr>
+						<tr>
+							<td><label for="cc2">15 Pts Candy:</label></td>
+							<td><button class="jscolor {valueElement:null,value:'66ccff'}"
+									style="width:50px; height:20px;" id=cc2 disabled></button></td>
+						</tr>
+						<tr>
+							<td><label for="cc3">25 Pts Candy:</label></td>
+							<td><button class="jscolor {valueElement:null,value:'66ccff'}"
+									style="width:50px; height:20px;" id=cc3 disabled></button></td>
+						</tr>
+
+
+
+					</table>
+					<br>
+					<br>
+					<br>
+					<br>
+
+					<br>
+					<br>
+					<button class="opt" onclick="CheckStart()">Restart</button>
+				</td>
+				<td>
+					<canvas id="canvas" height="768" width="1200"></canvas>
+
+				</td>
+				<td>
+					<h1 class="ml4">
+						<span class="letters letters-1">Bonus</span>
+						<span class="letters letters-2">Winner!!!</span>
+						<span class="letters letters-3">Loser!</span>
+						<span class="letters letters-4">Time Bonus</span>
+						<span id="pop5" class="letters letters-5">You are better than X points!</span>
+						<span id="pop6" class="letters letters-6">Ouchhh!! Only X Lives Remains</span>
+					</h1>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
 
 	<div id="myModal" class="modal">
 
 		<!-- Modal content -->
 		<div class="modal-content">
-		  <div class="modal-header">
-			<span class="close">&times;</span>
-			<h2>About</h2>
-		  </div>
-		  <div class="modal-body">
-			<p>Created By Asaf Zaks and Omer Nagar</p>
-			<p></p>
-			<p>We used JQuery validate & datepicker plugins in order to create this site,</p>
-			<p>and templates such forms and nav-bar we found online.</p>
-			<p></p>
-			<p>During our work, we mostly had troubles with css design & game bugs fixing.</p>
-		  </div>
+			<div class="modal-header">
+				<span class="close">&times;</span>
+				<h2>About</h2>
+			</div>
+			<div class="modal-body">
+				<p>Created By Asaf Zaks and Omer Nagar</p>
+				<p></p>
+				<p>We used JQuery validate & datepicker plugins in order to create this site,</p>
+				<p>and templates such forms and nav-bar we found online.</p>
+				<p></p>
+				<p>During our work, we mostly had troubles with css design & game bugs fixing.</p>
+			</div>
 		</div>
-	  
-	  </div>
+
+	</div>
 
 
 
-		  
-		  <script>
-	
-			// Get the modal
-		  var modal = document.getElementById("myModal");
-		  
-		  // Get the button that opens the modal
-		  
-		  // Get the <span> element that closes the modal
-		  var span = document.getElementsByClassName("close")[0];
-		  
-		  // When the user clicks the button, open the modal 
-		  
-		  
-		  // When the user clicks on <span> (x), close the modal
-		  span.onclick = function() {
+
+	<script>
+
+		// Get the modal
+		var modal = document.getElementById("myModal");
+
+		// Get the button that opens the modal
+
+		// Get the <span> element that closes the modal
+		var span = document.getElementsByClassName("close")[0];
+
+		// When the user clicks the button, open the modal 
+
+
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function () {
 			modal.style.display = "none";
-		  }
-		  
-		  // When the user clicks anywhere outside of the modal, close it
-		  window.onclick = function(event) {
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function (event) {
 			if (event.target == modal) {
-			  modal.style.display = "none";
+				modal.style.display = "none";
 			}
-		  }
-		  
-		  function About() {
+		}
+
+		function About() {
 			modal.style.display = "block";
 			modal.getElementsByClassName("modal-content")[0].style.display = "block";
 			modal.getElementsByClassName("modal-header")[0].style.display = "block";
 			modal.getElementsByClassName("modal-body")[0].style.display = "block";
 
-		  };
-		  </script>
+		};
+	</script>
 
-		<footer id="footer">
-			This page has been created by Israel BGU Information System Department students.
-			<br>
-			Contact us by email: <a href="mailto:zaksas@post.bgu.ac.il">Asaf Zaks</a> <a href="mailto:omernag@post.bgu.ac.il">Omer Nagar</a>
-		</footer> 
+	<footer id="footer">
+		This page has been created by Israel BGU Information System Department students.
+		<br>
+		Contact us by email: <a href="mailto:zaksas@post.bgu.ac.il">Asaf Zaks</a> <a
+			href="mailto:omernag@post.bgu.ac.il">Omer Nagar</a>
+	</footer>
 
 
 

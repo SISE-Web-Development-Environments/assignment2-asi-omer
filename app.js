@@ -1,6 +1,6 @@
 
 var context;
-var shape = new Object();
+var shape;
 var monsters;
 var board;
 var score;
@@ -29,7 +29,9 @@ var watch;
 var watchImage;
 var watchTaken;
 var packmanLives;
-
+var soundtrack;
+var gameRunning;
+var stuck;
 
 function Start() {
 	context = canvas.getContext("2d");
@@ -44,12 +46,13 @@ function Start() {
 	gameTime = sessionStorage.getItem("game_time");
 	num_of_monsters = sessionStorage.getItem("monster_num");
 	monsters = new Array();
+	shape = new Object();
 	watch = new Array();
 	hasPackman = false;
 	board = new Array();
 	coin = new Object();
 	watchImage = new Image();
-
+	playTheMusic();
 	watchImage.src = "Resources\\watch.png"
 	runningCoin = new Image();
 	runningCoin.src = "Resources\\coin.png"
@@ -61,6 +64,8 @@ function Start() {
 	lastCoinMove = 0;
 	watchTaken = false;
 	pac_color = "yellow";
+	gameRunning = true;
+	stuck = false;
 	var cnt = 260;
 	var food_remain = num_of_balls;
 	var pacman_remain = 1;
@@ -69,11 +74,10 @@ function Start() {
 		board[i] = new Array();
 		for (var j = 0; j < 12; j++) {
 			if (
-				(i == 3 && j == 3) ||
-				(i == 3 && j == 4) ||
-				(i == 3 && j == 5) ||
-				(i == 16 && j == 1) ||
-				(i == 16 && j == 2)
+				(i == 3 && (j >= 2 && j < 10)) ||
+				(i == 16 && (j >= 2 && j < 10)) ||
+				(j == 7 && (i >= 3 && i < 11 && i != 4)) ||
+				(j == 4 && (i >= 9 && i < 17 && i != 15))
 			) {
 				board[i][j] = 4;
 			} else {
@@ -196,7 +200,16 @@ function Start() {
 	watchInterval = setInterval(UpdateWatchPosition, 10000);
 }
 
-
+function CheckStart() {
+	if (gameRunning) {
+		window.clearInterval(interval);
+		window.clearInterval(monsterInterval);
+		window.clearInterval(watchInterval);
+		window.clearInterval(coinInterval);
+		soundtrack.stop();
+	}
+	Start();
+}
 
 //Drawing
 
@@ -348,7 +361,7 @@ function UpdatePosition() {
 		resetPackman();
 		showMinusLive();
 	}
-	else if (packmanLives == 0) {
+	else if (packmanLives <= 0) {
 		window.clearInterval(interval);
 		window.clearInterval(monsterInterval);
 		window.clearInterval(watchInterval);
@@ -367,7 +380,13 @@ function UpdatePosition() {
 		pac_color = "green";
 	}
 
-	if (time_elapsed <= 0) {
+	var finishedBalls = false
+	var scoretoWin = ((num_of_balls * 0.6 * 5) + (num_of_balls * 0.3 * 15) + (num_of_balls * 0.1 * 25) - 100);
+	if (score >= scoretoWin) {
+		finishedBalls = true;
+	}
+
+	if (time_elapsed <= 0 || finishedBalls) {
 		window.clearInterval(interval);
 		window.clearInterval(monsterInterval);
 		window.clearInterval(watchInterval);
@@ -384,87 +403,57 @@ function UpdatePosition() {
 }
 
 function UpdateMonsterPosition() {
-	var rnd;
 	monsters.forEach(monster => {
 		if (monster.last == 7 || monster.last == 9 || monster.last == 2) {
 			board[monster.i][monster.j] = 0
 		}
-		else{
+		else {
 			board[monster.i][monster.j] = monster.last;
 		}
-		if (shape.i >= monster.i && board[monster.i + 1][monster.j] != 4 && board[monster.i + 1][monster.j] != 7) {
-			if (shape.j > monster.j && board[monster.i][monster.j + 1] != 4 && board[monster.i][monster.j + 1] != 7) {
-				rnd = Math.random();
-				if (rnd > 0.9) {
+
+		if (stuck) {
+			stuck = goAroundWall(monster)
+		}
+		else {
+			if (shape.i > monster.i) {
+				if (legalMonsterMove(monster.i + 1, monster.j)) {
 					monster.i++;
 				}
-				else {
-					monster.j++;
+				else if (shape.j > monster.j) {
+					if (legalMonsterMove(monster.i, monster.j + 1)) {
+						monster.j++;
+					}
+					else stuck = true;
 				}
+				else stuck = true;
 			}
-			else {
-				rnd = Math.random();
-				if (rnd < 0.1 && monster.i > 0) {
+			else if (shape.i < monster.i) {
+				if (legalMonsterMove(monster.i - 1, monster.j)) {
 					monster.i--;
 				}
-				else {
-					monster.i++;
+				else if (shape.j < monster.j) {
+					if (legalMonsterMove(monster.i, monster.j - 1)) {
+						monster.j--;
+					}
+					else stuck = true;
 				}
+				else stuck = true;
 			}
-		}
-		else if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4 && board[monster.i - 1][monster.j] != 7) {
-			if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4 && board[monster.i][monster.j - 1] != 7) {
-				rnd = Math.random();
-				if (rnd > 0.9) {
-					monster.i--;
-				}
-				else {
-					monster.j--;
-				}
+			else if (shape.j > monster.j && legalMonsterMove(monster.i, monster.j + 1)) {
+				monster.j++;
 			}
-			else {
-				monster.i--;
-			}
-		}
-		else if (shape.j < monster.j && board[monster.i][monster.j - 1] != 4 && board[monster.i][monster.j - 1] != 7) {
-			if (shape.i < monster.i && board[monster.i - 1][monster.j] != 4 && board[monster.i - 1][monster.j] != 7) {
-				rnd = Math.random();
-				if (rnd > 0.9) {
-					monster.j--;
-				}
-				else {
-					monster.i--;
-				}
-			}
-			else {
+			else if (shape.j < monster.j && legalMonsterMove(monster.i, monster.j - 1)) {
 				monster.j--;
 			}
-		}
-		else if (shape.j >= monster.j && board[monster.i][monster.j + 1] != 4 && board[monster.i][monster.j + 1] != 7) {
-			if (shape.i > monster.i && board[monster.i + 1][monster.j] != 4 && board[monster.i + 1][monster.j] != 7) {
-				rnd = Math.random();
-				if (rnd > 0.9) {
-					monster.j++;
-				}
-				else {
-					monster.i++;
-				}
-			}
 			else {
-				rnd = Math.random();
-				if (rnd < 0.1 && monster.j > 0) {
-					monster.j--;
-				}
-				else {
-					monster.j++;
-				}
+				stuck = true;
 			}
 		}
 
 		monster.last = board[monster.i][monster.j];
 		board[monster.i][monster.j] = 7;
 
-		
+
 
 	});
 	if (board[shape.i][shape.j] == 7) {
@@ -484,7 +473,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = Math.floor(Math.random() * 4) + 1;
 	}
 
-	if (lastCoinMove == 2 && coinCanMove(coin.i + 1, coin.j) && coin.i < 19) {
+	if (lastCoinMove == 2 && coin.i < 19 && coinCanMove(coin.i + 1, coin.j)) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] = 0
 		}
@@ -495,7 +484,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = 2;
 		moved = true;
 	}
-	else if (lastCoinMove == 1 && coinCanMove(coin.i - 1, coin.j) && coin.i > 0) {
+	else if (lastCoinMove == 1 && coin.i > 0 && coinCanMove(coin.i - 1, coin.j)) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] = 0
 		}
@@ -506,7 +495,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = 1;
 		moved = true;
 	}
-	else if (lastCoinMove == 3 && coinCanMove(coin.i, coin.j - 1) && coin.j > 0) {
+	else if (lastCoinMove == 3 && coin.j > 0 && coinCanMove(coin.i, coin.j - 1)) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] = 0
 		}
@@ -517,7 +506,7 @@ function UpdateCoinPosition() {
 		lastCoinMove = 3;
 		moved = true;
 	}
-	else if (lastCoinMove == 4 && coinCanMove(coin.i, coin.j + 1) && coin.j < 11) {
+	else if (lastCoinMove == 4 && coin.j < 11 && coinCanMove(coin.i, coin.j + 1)) {
 		if (coin.last == 7 || coin.last == 2 || coin.last == 9) {
 			board[coin.i][coin.j] = 0
 		}
@@ -553,6 +542,73 @@ function UpdateWatchPosition() {
 
 
 //Other Helping Functions
+
+function legalMonsterMove(i, j) {
+	if (board[i][j] != 4 && board[i][j] != 7 && i >= 0 && i <= 19 && j >= 0 && j <= 11) {
+		return true;
+	}
+	return false;
+}
+
+function goAroundWall(monster) {
+	if (board[monster.i - 1][monster.j] == 4 ) {
+		if (shape.j < 5 && board[monster.i][monster.j - 1] != 4 ) {
+			monster.j--;
+		}
+		else if(board[monster.i][monster.j + 1] != 4) {
+			monster.j++;
+		}
+		else monster.i++;
+		if (legalMonsterMove(monster.i - 1, monster.j)) {
+			monster.i--;
+			return false
+		}
+		return true;
+	}
+	else if (board[monster.i + 1][monster.j] == 4 && board[monster.i][monster.j - 1] != 4) {
+		if (shape.j < 5 && board[monster.i][monster.j - 1] != 4) {
+			monster.j--;
+		}
+		else if(board[monster.i][monster.j + 1] != 4){
+			monster.j++;
+		}
+		else monster.i--;
+		if (legalMonsterMove(monster.i + 1, monster.j)) {
+			monster.i++;
+			return false
+		}
+		return true;
+	}
+	else if (board[monster.i][monster.j - 1] == 4 && board[monster.i - 1][monster.j] != 4) {
+		if (shape.i < 10 && board[monster.i-1][monster.j] != 4) {
+			monster.i--;
+		}
+		else if (board[monster.i+1][monster.j] != 4){
+			monster.i++;
+		}
+		else monster.j++;
+		if (legalMonsterMove(monster.i, monster.j - 1)) {
+			monster.j--;
+			return false
+		}
+		return true;
+	}
+	else if (board[monster.i][monster.j + 1] == 4 && board[monster.i - 1][monster.j] != 4) {
+		if (shape.i < 10 && board[monster.i-1][monster.j] != 4) {
+			monster.i--;
+		}
+		else if(board[monster.i+1][monster.j] != 4){
+			monster.i++;
+		}
+		else monster.j--;
+		if (legalMonsterMove(monster.i, monster.j + 1)) {
+			monster.j++;
+			return false
+		}
+		return true;
+	}
+	else return false;
+}
 
 function resetPackman() {
 	var emptyCell = findRandomEmptyCell(board);
@@ -606,6 +662,36 @@ function GetKeyPressed() {
 
 }
 
+function stopGameRunning(){
+	if (gameRunning) {
+		window.clearInterval(interval);
+		window.clearInterval(monsterInterval);
+		window.clearInterval(watchInterval);
+		window.clearInterval(coinInterval);
+		soundtrack.stop();
+	}
+}
+
+function playTheMusic() {
+	soundtrack = new sound("Resources\\Pac_man_theme.mp3");
+	soundtrack.play();
+}
+
+function sound(src) {
+	this.sound = document.createElement("audio");
+	this.sound.src = src;
+	this.sound.setAttribute("preload", "auto");
+	this.sound.setAttribute("controls", "none");
+	this.sound.style.display = "none";
+	document.body.appendChild(this.sound);
+	this.play = function () {
+		this.sound.play();
+	}
+	this.stop = function () {
+		this.sound.pause();
+	}
+}
+
 //Animation
 
 function showTimeBonus() {
@@ -630,7 +716,7 @@ function showTimeBonus() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		
+
 		});
 }
 
@@ -656,7 +742,7 @@ function showWon() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		
+
 		});
 }
 
@@ -682,7 +768,7 @@ function showLost() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		
+
 		});
 }
 
@@ -709,7 +795,7 @@ function showBonus() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		
+
 		});
 }
 
@@ -736,7 +822,7 @@ function showLoseByTime() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		
+
 		});
 }
 
@@ -763,6 +849,6 @@ function showMinusLive() {
 			duration: ml4.durationOut,
 			easing: "easeInExpo",
 			delay: ml4.delay
-		
+
 		});
 }
