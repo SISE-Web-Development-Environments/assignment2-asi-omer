@@ -32,7 +32,7 @@ var packmanLives;
 var soundtrack;
 var gameRunning;
 var stuck;
-
+var leftToEat;
 function Start() {
 	context = canvas.getContext("2d");
 	up_key = localStorage.getItem("up_key");
@@ -68,6 +68,7 @@ function Start() {
 	stuck = false;
 	var cnt = 260;
 	var food_remain = num_of_balls;
+	leftToEat = num_of_balls;
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 20; i++) {
@@ -116,42 +117,7 @@ function Start() {
 		food_remain--;
 	}
 
-	while (num_of_monsters > 0) {
-		var rndMonster = Math.floor(Math.random() * 4);
-		if (rndMonster == 0 && board[0][0] == 0) {
-			board[0][0] = 7;
-			monsters[num_of_monsters] = new Object();
-			monsters[num_of_monsters].i = 0;
-			monsters[num_of_monsters].j = 0;
-			monsters[num_of_monsters].last = 0;
-			num_of_monsters--;
-		}
-		else if (rndMonster == 1 && board[0][11] == 0) {
-			board[0][11] = 7;
-			monsters[num_of_monsters] = new Object();
-			monsters[num_of_monsters].i = 0;
-			monsters[num_of_monsters].j = 11;
-			monsters[num_of_monsters].last = 0;
-			num_of_monsters--;
-		}
-		else if (rndMonster == 2 && board[19][0] == 0) {
-			board[19][0] = 7;
-			monsters[num_of_monsters] = new Object();
-			monsters[num_of_monsters].i = 19;
-			monsters[num_of_monsters].j = 0;
-			monsters[num_of_monsters].last = 0;
-			num_of_monsters--;
-		}
-		else if (rndMonster == 3 && board[19][11] == 0) {
-			board[19][11] = 7;
-			monsters[num_of_monsters] = new Object();
-			monsters[num_of_monsters].i = 19;
-			monsters[num_of_monsters].j = 11;
-			monsters[num_of_monsters].last = 0;
-			num_of_monsters--;
-		}
-
-	}
+	setMonsters();
 
 	var coinPlacing = Math.floor(Math.random() * 4);
 	if (coinPlacing == 0) {
@@ -198,6 +164,44 @@ function Start() {
 	monsterInterval = setInterval(UpdateMonsterPosition, 300);
 	coinInterval = setInterval(UpdateCoinPosition, 100);
 	watchInterval = setInterval(UpdateWatchPosition, 10000);
+}
+
+function setMonsters(){
+	while (num_of_monsters > 0) {
+		var rndMonster = Math.floor(Math.random() * 4);
+		if (rndMonster == 0 && board[0][0] == 0) {
+			board[0][0] = 7;
+			monsters[num_of_monsters] = new Object();
+			monsters[num_of_monsters].i = 0;
+			monsters[num_of_monsters].j = 0;
+			monsters[num_of_monsters].last = 0;
+			num_of_monsters--;
+		}
+		else if (rndMonster == 1 && board[0][11] == 0) {
+			board[0][11] = 7;
+			monsters[num_of_monsters] = new Object();
+			monsters[num_of_monsters].i = 0;
+			monsters[num_of_monsters].j = 11;
+			monsters[num_of_monsters].last = 0;
+			num_of_monsters--;
+		}
+		else if (rndMonster == 2 && board[19][0] == 0) {
+			board[19][0] = 7;
+			monsters[num_of_monsters] = new Object();
+			monsters[num_of_monsters].i = 19;
+			monsters[num_of_monsters].j = 0;
+			monsters[num_of_monsters].last = 0;
+			num_of_monsters--;
+		}
+		else if (rndMonster == 3 && board[19][11] == 0) {
+			board[19][11] = 7;
+			monsters[num_of_monsters] = new Object();
+			monsters[num_of_monsters].i = 19;
+			monsters[num_of_monsters].j = 11;
+			monsters[num_of_monsters].last = 0;
+			num_of_monsters--;
+		}
+	}
 }
 
 function CheckStart() {
@@ -336,12 +340,15 @@ function UpdatePosition() {
 
 	if (board[shape.i][shape.j] == 1) {
 		score = score + 5;
+		leftToEat--;
 	}
 	else if (board[shape.i][shape.j] == 5) {
 		score = score + 15;
+		leftToEat--;
 	}
 	else if (board[shape.i][shape.j] == 6) {
 		score = score + 25;
+		leftToEat--;
 	}
 	else if (board[shape.i][shape.j] == 9) {
 		window.clearInterval(coinInterval);
@@ -358,8 +365,18 @@ function UpdatePosition() {
 
 	if (board[shape.i][shape.j] == 7 && packmanLives > 0) {
 		board[shape.i][shape.j] = 0;
+		ClearMonsters();
+		num_of_monsters = sessionStorage.getItem("monster_num");
+		setMonsters();
+		if(score>10){
+			score=score-10;
+		}
+		else{
+			score=0;
+		}
 		resetPackman();
 		showMinusLive();
+		soundtrack.stop();
 	}
 	else if (packmanLives <= 0) {
 		window.clearInterval(interval);
@@ -381,8 +398,7 @@ function UpdatePosition() {
 	}
 
 	var finishedBalls = false
-	var scoretoWin = ((num_of_balls * 0.6 * 5) + (num_of_balls * 0.3 * 15) + (num_of_balls * 0.1 * 25) - 100);
-	if (score >= scoretoWin) {
+	if (leftToEat==0) {
 		finishedBalls = true;
 	}
 
@@ -458,8 +474,18 @@ function UpdateMonsterPosition() {
 	});
 	if (board[shape.i][shape.j] == 7) {
 		board[shape.i][shape.j] = 0;
+		ClearMonsters();
+		num_of_monsters = sessionStorage.getItem("monster_num");
+		setMonsters();
+		if(score>10){
+			score=score-10;
+		}
+		else{
+			score=0;
+		}
 		resetPackman();
 		showMinusLive();
+		soundtrack.stop();
 	}
 	Draw();
 }
@@ -824,6 +850,11 @@ function showLoseByTime() {
 			delay: ml4.delay
 
 		});
+}
+function ClearMonsters() {
+	monsters.forEach(monster => {
+		board[monster.i][monster.j] = 0
+	})
 }
 
 function showMinusLive() {

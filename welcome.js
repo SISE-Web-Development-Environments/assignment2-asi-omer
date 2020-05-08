@@ -41,6 +41,7 @@ $(function () {
 });
 
 function SignIn() {
+  stopGameRunning();
   $("div").hide();
   $("#logo").show();
   $("#background").show();
@@ -48,6 +49,7 @@ function SignIn() {
 };
 
 function SignUp() {
+  stopGameRunning();
   $("div").hide();
   $("#logo").show();
   $("#background").show();
@@ -57,6 +59,7 @@ function SignUp() {
 
 
 function ReturnToMain() {
+  stopGameRunning();
   $("div").hide();
   $("#logo").show();
   $("#background").show();
@@ -64,6 +67,7 @@ function ReturnToMain() {
 };
 
 function showOptions() {
+  stopGameRunning();
   $("div").hide();
   $("#logo").show();
   $("#background").show();
@@ -236,6 +240,7 @@ $(function () {
     // in the "action" attribute of the form when valid
     submitHandler: function (form) {
       saveCredantials();
+      ReturnToMain();
     }
   });
 
