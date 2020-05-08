@@ -376,7 +376,7 @@ function UpdatePosition() {
 		}
 		resetPackman();
 		showMinusLive();
-		soundtrack.stop();
+		
 	}
 	else if (packmanLives <= 0) {
 		window.clearInterval(interval);
@@ -485,7 +485,7 @@ function UpdateMonsterPosition() {
 		}
 		resetPackman();
 		showMinusLive();
-		soundtrack.stop();
+		
 	}
 	Draw();
 }
