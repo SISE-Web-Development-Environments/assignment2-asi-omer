@@ -68,7 +68,7 @@ function Start() {
 	stuck = false;
 	var cnt = 260;
 	var food_remain = num_of_balls;
-	leftToEat = num_of_balls;
+	leftToEat = 0;
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 20; i++) {
@@ -86,6 +86,7 @@ function Start() {
 				if (randomNum <= (1.0 * food_remain) / cnt && !isCorner(i, j)) {
 					var randomFood = Math.random();
 					food_remain--;
+					leftToEat++;
 					if (randomFood < 0.6) {
 						board[i][j] = 1;
 					}
@@ -115,6 +116,7 @@ function Start() {
 		var emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = 1;
 		food_remain--;
+		leftToEat++;
 	}
 
 	setMonsters();
@@ -398,7 +400,7 @@ function UpdatePosition() {
 	}
 
 	var finishedBalls = false
-	if (leftToEat==0) {
+	if (leftToEat<=0) {
 		finishedBalls = true;
 	}
 
