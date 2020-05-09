@@ -340,6 +340,12 @@ function UpdatePosition() {
 		}
 	}
 
+	var currentTime = new Date();
+	time_elapsed = gameTime - ((currentTime - start_time) / 1000);
+	if (score < 100 && time_elapsed <= 10) {
+		pac_color = "green";
+	}
+
 	if (board[shape.i][shape.j] == 1) {
 		score = score + 5;
 		leftToEat--;
@@ -360,7 +366,7 @@ function UpdatePosition() {
 	else if (board[shape.i][shape.j] == 10) {
 		window.clearInterval(watchInterval);
 		showTimeBonus();
-		time_elapsed = time_elapsed + 50;
+		gameTime = parseInt(gameTime,10) + 50;
 		watchTaken = true;
 	}
 
@@ -393,14 +399,10 @@ function UpdatePosition() {
 
 
 
-	var currentTime = new Date();
-	time_elapsed = gameTime - ((currentTime - start_time) / 1000);
-	if (score < 100 && time_elapsed <= 10) {
-		pac_color = "green";
-	}
+	
 
 	var finishedBalls = false
-	if (leftToEat<=0) {
+	if (leftToEat<=2) {
 		finishedBalls = true;
 	}
 
